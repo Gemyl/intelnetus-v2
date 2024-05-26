@@ -1,0 +1,36 @@
+version: "3"
+services:
+    api:
+        container_name: intelnetus-api
+        build: ./intelnetus-api/
+        ports:
+            - '5000:5000'
+        volumes:
+            - ./../../DockerVolumes/.pybliometrics:/app/.pybliometrics
+        depends_on: 
+            - db
+        networks:
+            - intelnetus
+
+    db:
+        container_name: intelnetus-db
+        build: ./intelnetus-db/
+        ports:
+            - '3306:3306'
+        volumes:
+            - /path-persistent-volumen:/var/lib/mysql/
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        networks:
+            - intelnetus
+    
+    ui:
+        container_name: intelnetus-ui
+        build: ./intelnetus-ui/
+        ports:
+            - '4200:4200'
+        networks:
+            - intelnetus
+
+networks:
+    intelnetus:
