@@ -287,9 +287,9 @@ def get_scopus_fields(fields_ids):
 
     return returned_fields
 
-def process_metadata(keywords, year1, year2, fields, booleans, scopus_api_key, db, is_production_env):
+def process_metadata(keywords, start_year, end_year, fields, booleans, scopus_api_key, db, is_production_env):
 
-    for year in range(int(year1), int(year2)+1):
+    for year in range(int(start_year), int(end_year)+1):
         extract_metadata(keywords, year, fields, booleans, scopus_api_key, db, is_production_env)
 
     get_publications_duplicates(db)

@@ -3,6 +3,8 @@ from models import db
 from dotenv import load_dotenv
 from flask_cors import CORS
 from flask import Flask
+import pymysql
+import mysql
 import os
 import sys
 
@@ -11,7 +13,6 @@ port = os.environ.get('DB_PORT')
 user = os.environ.get('DB_USER')
 password = os.environ.get('DB_PASSWORD')
 database = os.environ.get('DB_NAME')
-dev_database = os.environ.get('DB_DEV_NAME')
 scopus_api_key = os.environ.get('SCOPUS_API_KEY')
 
 environment = 'PRODUCTION'
@@ -32,7 +33,7 @@ print(f'Application running in {environment} environment.')
 app = Flask(__name__)
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://{user}:{password}@{host}:{port}/{dev_database}'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{user}:{password}@{host}:{port}/{database}'
 
 db.init_app(app)
 with app.app_context():
