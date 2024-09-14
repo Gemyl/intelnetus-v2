@@ -1,4 +1,4 @@
-<generic-modal [title]="'Search Form'" [showSecondButton]="false" (onCloseClicked)="closeModal()" (onSubmitClicked)="onFormSubmit()">
+<generic-modal [title]="'Search Form'" [showSecondButton]="false" [enableSubmitButton]="searchForm.valid" (onCloseClicked)="closeModal()" (onSubmitClicked)="onFormSubmit()">
     <div modalContent>
         <form style="height: 70%;" class="form" [formGroup]="searchForm">
             <div class="d-flex flex-row justify-content-space-between border-style-solid border-secondary border-width-1 border-radius-1 w-100 vh-70 bg-smoke-white">

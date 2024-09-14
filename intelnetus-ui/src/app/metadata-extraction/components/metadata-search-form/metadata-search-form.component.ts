@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, NgForm, FormBuilder, FormArray } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, FormBuilder, FormArray, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { GetMetadataRequest } from '../../models/metadata-extraction.model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -51,12 +51,12 @@ export class MetadataSearchFormComponent implements OnInit {
     this.searchForm = this._fb.group({
       keywords: this._fb.array([this._fb.group(
         {
-          value: new FormControl(""), 
+          value: new FormControl("", Validators.required), 
           operator: new FormControl("")
-        }
+        },
       )]),
-      startYear: [""],
-      endYear: [""],
+      startYear: this._fb.control("", Validators.required),
+      endYear: this._fb.control("", Validators.required),
       fields: this._fb.array(
         this.fieldsOptions.map(f => this._fb.group({
           id: new FormControl(f.id),
@@ -79,7 +79,7 @@ export class MetadataSearchFormComponent implements OnInit {
 
   addKeywordBlock() {
     this.keywords.push(this._fb.group({
-      value: new FormControl(""),
+      value: new FormControl("", Validators.required),
       operator: new FormControl("AND")
     }));
   }
@@ -95,18 +95,18 @@ export class MetadataSearchFormComponent implements OnInit {
     const endYear: string = this.searchForm.get("endYear").value;
     const fields: string = this.fields.controls.filter(f => f.value.selected).map(f => f.value.id).join(",");
 
-    const requestBody = new GetMetadataRequest(
-      keywords, 
-      operators, 
-      startYear, 
-      endYear, 
-      fields
-    );
+    const requestBody = {
+      keywords: keywords,
+      operators: operators,
+      startYear: startYear,
+      endYear: endYear,
+      fields: fields
+    }; 
 
     this.closeModal(requestBody);
   }
 
-  closeModal(response?: GetMetadataRequest) {
+  closeModal(response?: Partial<GetMetadataRequest>) {
     this.activeModal.close(response);
   }
 
