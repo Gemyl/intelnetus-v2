@@ -21,6 +21,8 @@ export class MetadataExtractionService {
     .set('startYear', data.startYear)
     .set('endYear', data.endYear)
     .set('fields', data.fields)
+    .set('pageSize', data.pageSize)
+    .set('offset', data.offset)
 
     return this.http.get(url, {params: params});
   }

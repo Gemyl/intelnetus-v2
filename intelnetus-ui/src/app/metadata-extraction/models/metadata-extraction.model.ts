@@ -1,5 +1,6 @@
 export class MetadataState {
-    data: Metadata[]
+    data: Metadata[];
+    total: number;
 }
 
 export class PublicationsMetadata {
@@ -101,18 +102,24 @@ export class GetMetadataRequest {
     public startYear: string;
     public endYear: string;
     public fields: string;
+    public pageSize: number;
+    public offset: number;
 
     constructor(
         keywords: string,
         operators: string,
         startYear: string,
         endYear: string,
-        fields: string
+        fields: string,
+        pageSize: number,
+        offset: number
     ) {
         this.keywords = keywords;
         this.operators = operators;
         this.startYear = startYear;
         this.endYear = endYear;
         this.fields = fields;
+        this.pageSize = pageSize;
+        this.offset = offset;
     }
 }

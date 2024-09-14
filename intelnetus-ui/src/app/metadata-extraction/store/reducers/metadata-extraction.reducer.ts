@@ -6,11 +6,12 @@ import {
 } from "../actions/metadata-extraction.action";
 
 export const initialState: MetadataState = {
-    data: []
+    data: [],
+    total: 0
 }
 
 export const metadataExtractionReducer = createReducer(
     initialState,
     on(LoadMetadata, (state) => {return state}),
-    on(LoadMetadataSuccess, (state, { data }) => { return { ...state, data }})
+    on(LoadMetadataSuccess, (state, { data, total }) => { return { ...state, data, total }})
 );

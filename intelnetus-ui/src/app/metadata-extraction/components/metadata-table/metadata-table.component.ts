@@ -1,7 +1,8 @@
-import { Component, ViewChild, OnInit, Input } from '@angular/core';
+import { Component, ViewChild, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SortEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Metadata } from '../../models/metadata-extraction.model';
+import { PaginatorState } from 'primeng/paginator';
 
 @Component({
   selector: 'app-metadata-table',
@@ -10,17 +11,22 @@ import { Metadata } from '../../models/metadata-extraction.model';
 })
 export class MetadataTableComponent implements OnInit {
   @ViewChild("dt") dataGrid: Table;
+  @Output() onPageChange: EventEmitter<PaginatorState> = new EventEmitter<PaginatorState>();
   @Input() data: Array<Metadata> = [];
   @Input() loading: boolean;
+  @Input() total: number;
   public isSorted: boolean = false;
   public initialValue: any[];
+  public pageSize: number = 10;
+  public pageSizes: Array<Number> = [5,10,20];
 
   ngOnInit(): void {
     this.initialValue = this.data;
   }
 
-  onPageSelection(event: any) {
-    const temp = event;
+  onPageSelection(event: PaginatorState) {
+    this.pageSize = event.rows;
+    this.onPageChange.emit(event);
   }  
 
   onFilterSelection(event: any) {

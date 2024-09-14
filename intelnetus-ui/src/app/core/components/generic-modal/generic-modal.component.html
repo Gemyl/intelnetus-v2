@@ -13,7 +13,7 @@
             </button>
         }
         @if(showSubmitButton) {
-            <button class="btn btn-primary" (click)="onSubmit()">
+            <button class="btn btn-primary" [disabled]="!enableSubmitButton" (click)="onSubmit()">
                 {{submitButtonLabel}}
             </button>
         }

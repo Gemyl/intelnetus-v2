@@ -8,51 +8,60 @@ def get_metadata_receiver(scopus_api_key, is_production_env, db):
         keywords = request.args.get("keywords").split(',')
         booleans = request.args.get("operators").split(',')
         fields = request.args.get("fields").split(',')
-        year1 = request.args.get("startYear")
-        year2 = request.args.get("endYear")
+        start_year = request.args.get("startYear")
+        end_year = request.args.get("endYear")
         fields_abbreviations = get_scopus_fields(fields)
+        page_size = request.args.get("pageSize")
+        offset = request.args.get("offset")
 
         connection, cursor = get_db_connection_and_cursor(is_production_env)
-        process_metadata(keywords, year1, year2, fields, booleans, scopus_api_key, db, is_production_env)
+        process_metadata(keywords, start_year, end_year, fields, booleans, scopus_api_key, db, is_production_env)
 
-        basic_query = f'SELECT publications.id, publications.doi, publications.title, publications.year, \
-                       publications.citations_count, publications.keywords, publications.fields, authors.id,  \
-                       authors.first_name, authors.last_name, authors.study_fields, authors.citations_count,  \
-                       authors.h_index, organizations.id, organizations.name, organizations.primary_type,  \
-                       organizations.secondary_type, organizations.city, organizations.country  \
-                       FROM ((((publications_authors  \
-                       INNER JOIN publications ON publications_authors.publication_id = publications.id)  \
-                       INNER JOIN authors ON publications_authors.author_id = authors.id)  \
-                       INNER JOIN authors_organizations ON authors.id = authors_organizations.author_id)  \
-                       INNER JOIN organizations ON authors_organizations.organization_id = organizations.id)'
+        selection_query = f"SELECT publications.id, publications.doi, publications.title, publications.year, \
+                            publications.citations_count, publications.keywords, publications.fields, authors.id,  \
+                            authors.first_name, authors.last_name, authors.study_fields, authors.citations_count,  \
+                            authors.h_index, organizations.id, organizations.name, organizations.primary_type,  \
+                            organizations.secondary_type, organizations.city, organizations.country "
+
+        
+        join_query = "FROM ((((publications_authors  \
+                        INNER JOIN publications ON publications_authors.publication_id = publications.id)  \
+                        INNER JOIN authors ON publications_authors.author_id = authors.id)  \
+                        INNER JOIN authors_organizations ON authors.id = authors_organizations.author_id)  \
+                        INNER JOIN organizations ON authors_organizations.organization_id = organizations.id)"
+        
+        basic_query = selection_query + join_query
 
         condition_query = 'WHERE ('
         for i in range(len(keywords)):
             if (i == 0):
-                tempQuery = f'publications.keywords LIKE \'%{keywords[i].lower()}%\' \
+                temp_query = f'publications.keywords LIKE \'%{keywords[i].lower()}%\' \
                             OR publications.title LIKE \'%{keywords[i].lower()}%\' \
                             OR publications.abstract LIKE \'%{keywords[i].lower()}%\''
-                condition_query = condition_query + tempQuery
+                condition_query = condition_query + temp_query
             else:
-                tempQuery = f'{booleans[i-1]} `keywords` LIKE \'%{keywords[i].lower()}%\' \
+                temp_query = f'{booleans[i-1]} `keywords` LIKE \'%{keywords[i].lower()}%\' \
                             OR publications.title LIKE \'%{keywords[i].lower()}%\' \
                             OR publications.abstract LIKE \'%{keywords[i].lower()}%\''
-                condition_query = condition_query + tempQuery
+                condition_query = condition_query + temp_query
 
         condition_query = condition_query + ')  AND '
-        condition_query = condition_query + f'publications.year >= {year1} '
-        condition_query = condition_query + f'AND publications.year <= {year2} AND  ('
+        condition_query = condition_query + f'publications.year >= {start_year} '
+        condition_query = condition_query + f'AND publications.year <= {end_year} AND  ('
 
         for i in range(len(fields_abbreviations)):
             if (i == 0):
-                tempQuery = f'publications.fields_abbreviations LIKE \'%{fields_abbreviations[i]}%\''
-                condition_query = condition_query + tempQuery
+                temp_query = f'publications.fields_abbreviations LIKE \'%{fields_abbreviations[i]}%\''
+                condition_query = condition_query + temp_query
             else: 
-                tempQuery = f' OR publications.fields_abbreviations LIKE \'%{fields_abbreviations[i]}%\''
-                condition_query = condition_query + tempQuery
+                temp_query = f' OR publications.fields_abbreviations LIKE \'%{fields_abbreviations[i]}%\''
+                condition_query = condition_query + temp_query
         
-        condition_query = condition_query + ');'
-        query = basic_query + condition_query
+        condition_query = condition_query + ')'
+        pagination_query = f" LIMIT {page_size} OFFSET {offset}"
+        metadata_query = f'{condition_query} {pagination_query};'
+
+        query = basic_query + metadata_query
 
         data = []
         publications_ids = []
@@ -203,12 +212,17 @@ def get_metadata_receiver(scopus_api_key, is_production_env, db):
             "organizationsVariants":organizations_variants
         }
 
+        query = f"SELECT COUNT(DOI) {join_query} {condition_query};"
+        cursor.execute(query)
+        total = cursor.fetchall()[0][0]
+
         if (len(data) > 0):
             result = {
                 "successful": "true",
                 "hasResult": "true",
                 "data": data,
-                "variants": variants
+                "variants": variants,
+                "total": total
             }
 
         else:
@@ -216,7 +230,8 @@ def get_metadata_receiver(scopus_api_key, is_production_env, db):
                 "successful": "true",
                 "hasResult": "false",
                 "data": data,
-                "variants": variants
+                "variants": variants,
+                "total": total
             }
     
     except Exception as err:

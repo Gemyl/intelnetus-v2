@@ -11,6 +11,7 @@ import { MetadataExtractionEffects } from './store/effects/metadata-extraction.e
 import { MetadataSearchFormComponent } from './components/metadata-search-form/metadata-search-form.component';
 import { GenericModalComponent } from '../core/components/generic-modal/generic-modal.component';
 import { TableModule } from 'primeng/table';
+import { PaginatorModule } from 'primeng/paginator';
 import { MetadataTableComponent } from './components/metadata-table/metadata-table.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -30,7 +31,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     StoreModule.forFeature('metadataState', metadataExtractionReducer),
     EffectsModule.forFeature([MetadataExtractionEffects]),
     TableModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    PaginatorModule
   ]
 })
 export class MetadataExtractionModule { }

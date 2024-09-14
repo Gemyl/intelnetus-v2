@@ -6,15 +6,12 @@
         <p-table 
             #dt
             [value]="data" 
-            [paginator]="true"
-            [rows]="5" 
-            [rowsPerPageOptions]="[5,10,20]"
+            [paginator]="false"
             [globalFilterFields]="['firstName','lastName','age']"
             [sortMode]="'multiple'"
             [customSort]="true"
             [loading]="loading"
             [tableStyle]="{'min-width': '220rem'}"
-            (onPage)="onPageSelection($event)"
             (onFilter)="onFilterSelection($event)"
             (sortFunction)="customSort($event)">
             <ng-template pTemplate="header">
@@ -140,5 +137,10 @@
                 </tr>
             </ng-template>
         </p-table>
+        <p-paginator
+            [rows]="pageSize"
+            [rowsPerPageOptions]="pageSizes"
+            [totalRecords]="total"
+            (onPageChange)="onPageSelection($event)"></p-paginator>
     </div>
 </div>
