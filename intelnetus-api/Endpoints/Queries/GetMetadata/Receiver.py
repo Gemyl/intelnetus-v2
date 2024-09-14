@@ -5,11 +5,11 @@ from flask import request, jsonify
 def get_metadata_receiver(scopus_api_key, is_production_env, db):
 
     try:
-        keywords = request.args.getlist("keywords")[0].split(',')
-        booleans = request.args.getlist("booleans")[0].split(',')
-        fields = request.args.getlist("fields")[0].split(',')
-        year1 = request.args.get("year1")
-        year2 = request.args.get("year2")
+        keywords = request.args.get("keywords").split(',')
+        booleans = request.args.get("operators").split(',')
+        fields = request.args.get("fields").split(',')
+        year1 = request.args.get("startYear")
+        year2 = request.args.get("endYear")
         fields_abbreviations = get_scopus_fields(fields)
 
         connection, cursor = get_db_connection_and_cursor(is_production_env)

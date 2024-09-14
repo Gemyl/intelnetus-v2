@@ -1,17 +1,10 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" 
-        integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">   
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
-    </head>
-    <body>
-        <mat-toolbar class="navbar-toggler" style="background-color: black;">
-            <a href="/" style="display: inline-block;">
-                <img src="../../assets/img/navbarlogo.jpg" style="width: 60px; height: 50px;">
-            </a>
-            <a class="toolbar-item" href="/search">Search</a>
-        </mat-toolbar>  
-        <router-outlet></router-outlet>    
-    </body>
-</html>
+<body>
+  <app-control-bar></app-control-bar>
+  <div style="position: relative; z-index: 2;">
+    <app-main-menu-navbar></app-main-menu-navbar>
+  </div>
+  <div style="position: relative; z-index: 1; width: 100%; height: 100vh;">
+    <app-toasts></app-toasts>
+    <router-outlet></router-outlet>
+  </div>
+</body>

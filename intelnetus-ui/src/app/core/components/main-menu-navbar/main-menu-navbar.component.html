@@ -1,0 +1,18 @@
+<div class="d-flex justify-content-start align-items-start rounded m-0 p-0 h-100" style="width: 60px;">
+    <div class="main-menu-icons navbar-container" (mouseenter)="toggleMainMenuNavbar()" 
+        (mouseleave)="closeMainMenuNavbar()">
+        <fa-icon [icon]="faHome" [size]="'sm'" class="menu-icon"></fa-icon>
+        <fa-icon [icon]="faSearch" [size]="'sm'" class="menu-icon"></fa-icon>
+        <fa-icon [icon]="faGlobe" [size]="'sm'" class="menu-icon"></fa-icon>
+        <fa-icon [icon]="faGear" [size]="'sm'" class="menu-icon"></fa-icon>
+        <fa-icon [icon]="faInfo" [size]="'sm'" class="menu-icon"></fa-icon>
+    </div>
+    <div #mainNavbar class="main-menu-titles navbar-container" (mouseenter)="toggleMainMenuNavbar()"
+        (mouseleave)="closeMainMenuNavbar()" [@draw]="showMenuItemsTitles ? 'drawOut' : 'drawIn'">
+        <a href="" class="menu-text" [ngStyle]="{'opacity': showMenuItemsTitles ? '1' : '0'}">Home</a>
+        <a href="/metadata-extraction" class="menu-text" [ngStyle]="{'opacity': showMenuItemsTitles ? '1' : '0'}">Search</a>
+        <a class="menu-text bg-primary-hover" [ngStyle]="{'opacity': showMenuItemsTitles ? '1' : '0'}">Our Presence</a>
+        <a class="menu-text" [ngStyle]="{'opacity': showMenuItemsTitles ? '1' : '0'}">Settings</a>
+        <a class="menu-text" [ngStyle]="{'opacity': showMenuItemsTitles ? '1' : '0'}">Info</a>
+    </div>
+</div>

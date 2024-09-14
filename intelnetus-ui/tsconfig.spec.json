@@ -2,14 +2,10 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "outDir": "out",
-    "sourceMap": true,
+    "outDir": "./out-tsc/spec",
     "types": [
-      "@angular/localize",
-      "jest",
-      "node"
+      "jasmine",
+      "@angular/localize"
     ]
   },
   "include": [

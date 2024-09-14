@@ -1,0 +1,21 @@
+<div class="generic-modal-container">
+    <div class="d-flex flex-row justify-content-between align-items-center border-bottom border-light-gray w-100 p-3" style="height: 100px;">
+        <span style="font-size: 35px;">{{title}}</span>
+        <button class="border-0 bg-white" (click)="onClose()">
+            <fa-icon [icon]="faTimes" [size]="'xl'"></fa-icon>
+        </button>
+    </div>
+    <ng-content select="[modalContent]"></ng-content>
+    <div class="d-flex flex-row justify-content-end align-items-center border-top border-light-gray w-100 p-3" style="height: 75px;">
+        @if(showSecondButton) {
+            <button class="btn btn-secondary" (click)="onSecondButtonClicked()">
+                {{secondButtonLabel}}
+            </button>
+        }
+        @if(showSubmitButton) {
+            <button class="btn btn-primary" (click)="onSubmit()">
+                {{submitButtonLabel}}
+            </button>
+        }
+    </div>
+</div>

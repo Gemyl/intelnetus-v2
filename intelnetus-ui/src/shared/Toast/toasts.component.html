@@ -1,0 +1,15 @@
+@for(toast of _toastService.toasts; track toast) {
+    <ngb-toast 
+        [header]="toast.header || ''" 
+        [autohide]="true" 
+        [delay]="toast.delay || 5000" 
+        (hidden)="_toastService.remove(toast)"
+        [ngClass]="toast.type"
+        style="font-size: 18px;"
+        >
+            <i [ngClass]="'fa fa-' + toast.icon"></i>
+            <span class="toast-text">
+                {{toast.body}}
+            </span>
+    </ngb-toast>
+}

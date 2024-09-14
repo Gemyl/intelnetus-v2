@@ -1,0 +1,62 @@
+<generic-modal [title]="'Search Form'" [showSecondButton]="false" (onCloseClicked)="closeModal()" (onSubmitClicked)="onFormSubmit()">
+    <div modalContent>
+        <form style="height: 70%;" class="form" [formGroup]="searchForm">
+            <div class="d-flex flex-row justify-content-space-between border-style-solid border-secondary border-width-1 border-radius-1 w-100 vh-70 bg-smoke-white">
+                <div class="d-flex flex-direction-column justify-content-space-between h-100 w-50 p-2">
+                    <div class="d-flex flex-column h-100 w-100" formArrayName="keywords">
+                        <label class="intel-label">Keywords</label>
+                        <div class="d-flex flex-column overflow-y-auto mh-90 w-100 p-2">
+                            @for(keyword of keywords.controls; track keyword.value.value; let i = $index;) {
+                                <div class="d-flex flex-column w-100 mt-2" [formGroupName]="i">
+                                    @if(i > 0) {
+                                        <div class="d-flex flex-row">
+                                            <select name="operator-{{i}}" class="intel-slct" formControlName="operator">
+                                                @for(operator of operatorsOptions; track operator;) {
+                                                    <option>{{operator}}</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    }
+                                    <div class="d-flex flex-row mt-2">
+                                        <input name="keyword-{{i}}" type="text" class="text-input" style="width: 90%;"
+                                        placeholder="Enter keyword" formControlName="value">
+                                        <button class="btn btn-light border-light-gray ms-2" (click)="removeKeywordBlock(i)">
+                                            <fa-icon [icon]="faTrash" [size]="'sm'"></fa-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                            <button type="button" class="btn btn-light border-light-gray mt-2" style="width: fit-content;" (click)="addKeywordBlock()">
+                                <i class="fa fa-plus"></i>
+                                Add keyword</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex-column justify-content-space-between h-100 w-50 p-2">
+                    <div class="d-flex flex-column h-15">
+                        <label class="intel-label">Years Range</label>
+                        <div class="d-flex flex-row justify-content-between pt-2 pb-2 ps-2">
+                            <input name="first-year" type="text" class="text-input" placeholder="Enter First Year"
+                                style="width: 48%;" [formControlName]="'startYear'">
+                            <input name="last-year" type="text" class="text-input" placeholder="Enter Second Year"
+                                style="width: 48%;" [formControlName]="'endYear'">
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column h-75 mt-4 border-light-gray" formArrayName="fields">
+                        <label class="intel-label">Scientific Fields</label>
+                        <div class="d-flex flex-column overflow-y-auto bg-white border border-light-gray rounded p-2 mt-2 ms-2">
+                            @for(field of fields.controls; track field.value.id; let i = $index;) {
+                                <div class="d-flex flex-row" [formGroupName]="i">
+                                    <input name="{{field.value.name}}" type="checkbox" style="accent-color: rgb(65, 112, 65);" formControlName="selected">
+                                    <span style="margin-left: 10px;" [ngStyle]="{'font-weight': field.value.selected ? 'bold' : 'normal'}">
+                                        {{field.value.name}}
+                                    </span>
+                                </div>
+                            }    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</generic-modal>
