@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, FormArray, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
-import { GetMetadataRequest } from '../../models/metadata-extraction.model';
+import { Field, GetMetadataRequest } from '../../models/metadata-extraction.model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
@@ -12,7 +12,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 export class MetadataSearchFormComponent implements OnInit {
   public searchForm: FormGroup;
   public operatorsOptions: string[] = ['AND','OR','AND NOT'];
-  public fieldsOptions: any[] = [
+  public fieldsOptions: Array<Field> = [
     { id: "0", name: "Agricultural and Biological Sciences", selected: false },
     { id: "1", name: "Arts and Humanities", selected: false },
     { id: "2", name: "Biochemistry Genetics and Molecular Biology", selected: false },
@@ -62,7 +62,7 @@ export class MetadataSearchFormComponent implements OnInit {
           id: new FormControl(f.id),
           name: new FormControl(f.name),
           selected: new FormControl(f.selected)
-        }))
+        })), this.fieldsValidator()
       )
     });
   }
@@ -76,6 +76,17 @@ export class MetadataSearchFormComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  fieldsValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const fieldControls = control.value as Array<Field>;
+      if(fieldControls.some((f) => f.selected)) {
+        return null;
+      }
+
+      return {fieldsRequired: true};
+    }
+  }
 
   addKeywordBlock() {
     this.keywords.push(this._fb.group({

@@ -5,7 +5,6 @@ import { AppState } from '../app.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MetadataSearchFormComponent } from './components/metadata-search-form/metadata-search-form.component';
 import { GetMetadataRequest, Metadata } from './models/metadata-extraction.model';
-import { TablePageEvent } from 'primeng/table';
 import { PaginatorState } from 'primeng/paginator';
 
 @Component({
