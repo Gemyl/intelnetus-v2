@@ -5,7 +5,7 @@ import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
   {path:'', component: HomeComponent},
-  {path:'metadata-extraction', component: MetadataExtractionComponent}
+  {path:'metadata-extraction', loadChildren: () => import('./metadata-extraction/metadata-extraction.module').then(m => m.MetadataExtractionModule)}
 ];
 
 @NgModule({

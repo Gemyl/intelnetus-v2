@@ -14,6 +14,7 @@ import { TableModule } from 'primeng/table';
 import { PaginatorModule } from 'primeng/paginator';
 import { MetadataTableComponent } from './components/metadata-table/metadata-table.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MetadataExtractionRoutingModule } from './metadata-extraction-routing.module';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     EffectsModule.forFeature([MetadataExtractionEffects]),
     TableModule,
     FontAwesomeModule,
-    PaginatorModule
+    PaginatorModule,
+    MetadataExtractionRoutingModule
   ]
 })
 export class MetadataExtractionModule { }
