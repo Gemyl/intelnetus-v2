@@ -17,7 +17,7 @@ def get_db_connection_and_cursor():
                                 database="scopus",
                                 auth_plugin='mysql_native_password')
     
-    return connection, connection.cursor()
+    return connection.cursor(), connection
 
 def get_column_size(column_name, table_name, cursor):
     try:
@@ -51,7 +51,7 @@ def expand_column_size(new_length, table_name, column_name, connection, cursor):
 
 # TESTS
 def test_expand_column_size_over_maximum():
-    connection, cursor = get_db_connection_and_cursor()
+    cursor, connection = get_db_connection_and_cursor()
 
     test_list = []
     for i in range(5001):
@@ -85,7 +85,7 @@ def test_expand_column_size_over_maximum():
 
 
 def test_expand_column_size_under_maximum():
-    connection, cursor = get_db_connection_and_cursor()
+    cursor, connection = get_db_connection_and_cursor()
 
     test_list = []
     for i in range(1000):

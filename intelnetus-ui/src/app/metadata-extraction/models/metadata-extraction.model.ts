@@ -1,3 +1,15 @@
+export enum Entity {
+    PUBLICATION = "publications",
+    AUTHOR = "authors",
+    ORGANIZATION = "organizations"
+}
+
+export interface GridFilter {
+    field: string,
+    value: string | number,
+    entity: string
+}
+
 export interface Field {
     id: string,
     name: string,
@@ -49,6 +61,7 @@ export class GetMetadataRequest {
     public fields: string;
     public pageSize: number;
     public offset: number;
+    public filterValue: string;
 
     constructor(
         keywords: string,
@@ -57,7 +70,8 @@ export class GetMetadataRequest {
         endYear: string,
         fields: string,
         pageSize: number,
-        offset: number
+        offset: number,
+        filterValue: string
     ) {
         this.keywords = keywords;
         this.operators = operators;
@@ -66,5 +80,6 @@ export class GetMetadataRequest {
         this.fields = fields;
         this.pageSize = pageSize;
         this.offset = offset;
+        this.filterValue = filterValue;
     }
 }

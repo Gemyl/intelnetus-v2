@@ -24,14 +24,14 @@ def get_db_connection_and_cursor(is_production_env):
         auth_plugin='mysql_native_password'
     )
     
-    return connection, connection.cursor()
+    return connection.cursor(), connection, 
 
         
 def expand_column_size(new_length, table_name, column_name, is_production_env):
     new_length_int = str(new_length)
     new_table_name = f"{table_name}"
 
-    connection, cursor = get_db_connection_and_cursor(is_production_env)
+    cursor, connection = get_db_connection_and_cursor(is_production_env)
 
     query = f"ALTER TABLE {new_table_name} MODIFY COLUMN {column_name} VARCHAR({new_length_int});"
     cursor.execute(query)

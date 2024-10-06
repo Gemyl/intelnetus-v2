@@ -1,8 +1,9 @@
 import { Component, ViewChild, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SortEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { Metadata } from '../../models/metadata-extraction.model';
+import { GridFilter, Metadata } from '../../models/metadata-extraction.model';
 import { PaginatorState } from 'primeng/paginator';
+import { Entity } from '../../models/metadata-extraction.model';
 
 @Component({
   selector: 'app-metadata-table',
@@ -12,6 +13,7 @@ import { PaginatorState } from 'primeng/paginator';
 export class MetadataTableComponent implements OnInit {
   @ViewChild("dt") dataGrid: Table;
   @Output() onPageChange: EventEmitter<PaginatorState> = new EventEmitter<PaginatorState>();
+  @Output() onFiltersChange: EventEmitter<string> = new EventEmitter<string>();
   @Input() data: Array<Metadata> = [];
   @Input() loading: boolean;
   @Input() total: number;
@@ -19,6 +21,8 @@ export class MetadataTableComponent implements OnInit {
   public initialValue: any[];
   public pageSize: number = 10;
   public pageSizes: Array<Number> = [5,10,20];
+  public entity = Entity;
+  public filters: Array<GridFilter> = [];
 
   ngOnInit(): void {
     this.initialValue = this.data;
@@ -29,18 +33,30 @@ export class MetadataTableComponent implements OnInit {
     this.onPageChange.emit(event);
   }  
 
-  onFilterSelection(event: any) {
-    const temp = event;
-  }
-
-  onFilterData(event: any, field: string, matchMode: string) {
+  onFilterData(event: any, field: string, entity: string, matchMode: string) {
     let value = event.target.value;
+    const filters = this.dataGrid.filters as any;
 
-    if (value) {
-      this.dataGrid.filter(value, field, matchMode);
+    let filterValues = Object.keys(filters)
+    .map((key => {
+      return {
+        field: key,
+        value: field == key ? value : filters[key].value,
+        entity: entity
+      }
+    }));
+
+    const filter = this.filters.find(f => f.field == field);
+    if(!filter) {
+      this.filters.push(filterValues.find(f => f.field == field));
+    } else if(value) {
+      filter.value = value;
     } else {
-      this.dataGrid.reset();
+      this.filters = this.filters.filter(f => f.field != field);
     }
+
+    this.onFiltersChange.emit(JSON.stringify(this.filters));
+
   }
 
   customSort(event: SortEvent) {

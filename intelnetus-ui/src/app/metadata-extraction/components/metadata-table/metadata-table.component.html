@@ -5,14 +5,13 @@
     <div>
         <p-table 
             #dt
+            [style]="{'display':'flex', 'max-height':'45vh'}"
             [value]="data" 
             [paginator]="false"
-            [globalFilterFields]="['firstName','lastName','age']"
             [sortMode]="'multiple'"
             [customSort]="true"
             [loading]="loading"
-            [tableStyle]="{'min-width': '220rem'}"
-            (onFilter)="onFilterSelection($event)"
+            [tableStyle]="{'width': '220rem'}"
             (sortFunction)="customSort($event)">
             <ng-template pTemplate="header">
                 <tr>
@@ -72,49 +71,234 @@
                         Country
                     </th>
                 </tr>
-                <!-- <tr>
+                <tr>
                     <th>
                         <p-columnFilter 
-                            #firstNameFilter
-                            field="firstName">
+                            #doiFilter
+                            field="doi">
                             <ng-template pTemplate="filter">
                                 <input 
                                     type="text"
                                     class="text-input"
-                                    placeholder="Filter by first name" 
-                                    (input)="onFilterData($event, 'firstName', $any(firstNameFilter.dt.filters['firstName']).matchMode)">
+                                    placeholder="Filter by DOI" 
+                                    (input)="onFilterData($event, 'doi', entity.PUBLICATION, $any(doiFilter.dt.filters['doi']).matchMode)">
                             </ng-template>
                         </p-columnFilter>
                     </th>
                     <th>
                         <p-columnFilter 
-                            #lastNameFilter
-                            field="lastName">
+                            #titleFilter
+                            field="title">
                             <ng-template pTemplate="filter">
                                 <input 
                                 type="text"
                                 class="text-input"
-                                placeholder="Filter by last name"
-                                (input)="onFilterData($event, 'lastName', $any(lastNameFilter.dt.filters['lastName']).matchMode)">
+                                placeholder="Filter by title"
+                                (input)="onFilterData($event, 'title', entity.PUBLICATION, $any(titleFilter.dt.filters['title']).matchMode)">
                             </ng-template>
                         </p-columnFilter>
                     </th>
 
                     <th>
                         <p-columnFilter 
-                            #ageFilter
-                            field="age"
+                            #yearFilter
+                            field="year"
                             type="numeric">
                             <ng-template pTemplate="filter">
                                 <input 
                                     type="text"
                                     class="text-input"
-                                    placeholder="Filter by age"
-                                    (input)="onFilterData($event, 'age', $any(ageFilter.dt.filters['age']).matchMode)">
+                                    placeholder="Filter by year"
+                                    (input)="onFilterData($event, 'year', entity.PUBLICATION, $any(yearFilter.dt.filters['year']).matchMode)">
                             </ng-template>
                         </p-columnFilter>
                     </th>
-                </tr> -->
+
+                    <th>
+                        <p-columnFilter 
+                            #citationsCountFilter
+                            field="citations_count"
+                            type="numeric">
+                            <ng-template pTemplate="filter">
+                                <input 
+                                    type="text"
+                                    class="text-input"
+                                    placeholder="Filter by citations count"
+                                    (input)="onFilterData($event, 'citations_count', entity.PUBLICATION, $any(citationsCountFilter.dt.filters['year']).matchMode)">
+                            </ng-template>
+                        </p-columnFilter>
+                    </th>
+
+                    <th>
+                        <p-columnFilter 
+                            #keywordsFilter
+                            field="keywords">
+                            <ng-template pTemplate="filter">
+                                <input 
+                                    type="text"
+                                    class="text-input"
+                                    placeholder="Filter by keywords"
+                                    (input)="onFilterData($event, 'keywords', entity.PUBLICATION, $any(keywordsFilter.dt.filters['keywords']).matchMode)">
+                            </ng-template>
+                        </p-columnFilter>
+                    </th>
+
+                    <th>
+                        <p-columnFilter 
+                            #fieldsFilter
+                            field="fields">
+                            <ng-template pTemplate="filter">
+                                <input 
+                                    type="text"
+                                    class="text-input"
+                                    placeholder="Filter by fields"
+                                    (input)="onFilterData($event, 'fields', entity.PUBLICATION, $any(fieldsFilter.dt.filters['fields']).matchMode)">
+                            </ng-template>
+                        </p-columnFilter>
+                    </th>
+
+                    <th>
+                        <p-columnFilter 
+                            #firstNameFilter
+                            field="first_name">
+                            <ng-template pTemplate="filter">
+                                <input 
+                                    type="text"
+                                    class="text-input"
+                                    placeholder="Filter by first name"
+                                    (input)="onFilterData($event, 'first_name', entity.AUTHOR, $any(firstNameFilter.dt.filters['first_name']).matchMode)">
+                            </ng-template>
+                        </p-columnFilter>
+                    </th>
+
+                    <th>
+                        <p-columnFilter 
+                            #lastNameFilter
+                            field="last_name">
+                            <ng-template pTemplate="filter">
+                                <input 
+                                    type="text"
+                                    class="text-input"
+                                    placeholder="Filter by last name"
+                                    (input)="onFilterData($event, 'last_name', entity.AUTHOR, $any(lastNameFilter.dt.filters['last_name']).matchMode)">
+                            </ng-template>
+                        </p-columnFilter>
+                    </th>
+
+                    <th>
+                        <p-columnFilter 
+                            #fieldsOfStudyFilter
+                            field="fields_of_study">
+                            <ng-template pTemplate="filter">
+                                <input 
+                                    type="text"
+                                    class="text-input"
+                                    placeholder="Filter by fields of study"
+                                    (input)="onFilterData($event, 'fields_of_study', entity.AUTHOR, $any(fieldsOfStudyFilter.dt.filters['fields_of_study']).matchMode)">
+                            </ng-template>
+                        </p-columnFilter>
+                    </th>
+
+                    <th>
+                        <p-columnFilter 
+                            #citationsCountFilter
+                            field="citations_count"
+                            type="numeric">
+                            <ng-template pTemplate="filter">
+                                <input 
+                                    type="text"
+                                    class="text-input"
+                                    placeholder="Filter by citations count"
+                                    (input)="onFilterData($event, 'citations_count', entity.AUTHOR, $any(citationsCountFilter.dt.filters['citations_count']).matchMode)">
+                            </ng-template>
+                        </p-columnFilter>
+                    </th>
+
+                    <th>
+                        <p-columnFilter 
+                            #hIndexCountFilter
+                            field="h_index"
+                            type="numeric">
+                            <ng-template pTemplate="filter">
+                                <input 
+                                    type="text"
+                                    class="text-input"
+                                    placeholder="Filter by hIndex"
+                                    (input)="onFilterData($event, 'hIndex', entity.AUTHOR, $any(hIndexCountFilter.dt.filters['h_index']).matchMode)">
+                            </ng-template>
+                        </p-columnFilter>
+                    </th>
+
+                    <th>
+                        <p-columnFilter 
+                            #organizationNameFilter
+                            field="name">
+                            <ng-template pTemplate="filter">
+                                <input 
+                                    type="text"
+                                    class="text-input"
+                                    placeholder="Filter by organization name"
+                                    (input)="onFilterData($event, 'name', entity.ORGANIZATION, $any(organizationNameFilter.dt.filters['name']).matchMode)">
+                            </ng-template>
+                        </p-columnFilter>
+                    </th>
+
+                    <th>
+                        <p-columnFilter 
+                            #primaryTypeFilter
+                            field="primary_type">
+                            <ng-template pTemplate="filter">
+                                <input 
+                                    type="text"
+                                    class="text-input"
+                                    placeholder="Filter by primary type"
+                                    (input)="onFilterData($event, 'primary_type', entity.ORGANIZATION, $any(primaryTypeFilter.dt.filters['primary_type']).matchMode)">
+                            </ng-template>
+                        </p-columnFilter>
+                    </th>
+
+                    <th>
+                        <p-columnFilter 
+                            #secondaryTypeFilter
+                            field="secondary_type">
+                            <ng-template pTemplate="filter">
+                                <input 
+                                    type="text"
+                                    class="text-input"
+                                    placeholder="Filter by secondary type"
+                                    (input)="onFilterData($event, 'secondary_type', entity.ORGANIZATION, $any(secondaryTypeFilter.dt.filters['secondary_type']).matchMode)">
+                            </ng-template>
+                        </p-columnFilter>
+                    </th>
+
+                    <th>
+                        <p-columnFilter 
+                            #cityFilter
+                            field="city">
+                            <ng-template pTemplate="filter">
+                                <input 
+                                    type="text"
+                                    class="text-input"
+                                    placeholder="Filter by city"
+                                    (input)="onFilterData($event, 'city', entity.ORGANIZATION, $any(cityFilter.dt.filters['city']).matchMode)">
+                            </ng-template>
+                        </p-columnFilter>
+                    </th>
+
+                    <th>
+                        <p-columnFilter 
+                            #countryFilter
+                            field="country">
+                            <ng-template pTemplate="filter">
+                                <input 
+                                    type="text"
+                                    class="text-input"
+                                    placeholder="Filter by country"
+                                    (input)="onFilterData($event, 'country', entity.ORGANIZATION, $any(countryFilter.dt.filters['country']).matchMode)">
+                            </ng-template>
+                        </p-columnFilter>
+                    </th>
+                </tr>
             </ng-template>
             <ng-template pTemplate="body" let-item>
                 <tr>

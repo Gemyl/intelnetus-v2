@@ -16,8 +16,9 @@ export class MetadataExtractionComponent implements OnInit {
   public data: Array<Metadata> = [];
   public loading: boolean = false;
   public pageSize: number = 10;
-  public offset: number = 10;
+  public offset: number = 0;
   public total: number = 0;
+  public filterValue: string = "[]";
   public searchCriteria: GetMetadataRequest;
 
   constructor(
@@ -35,11 +36,18 @@ export class MetadataExtractionComponent implements OnInit {
       });
   }
 
-  getPageState(event: PaginatorState) {
+  handlePageChange(event: PaginatorState) {
     this.pageSize = event.rows;
     this.offset = event.first;
-    const request = {...this.searchCriteria, ...{pageSize: this.pageSize, offset: this.offset}};
+    const request = {...this.searchCriteria, ...{pageSize: this.pageSize, offset: this.offset, filterValue: this.filterValue}};
         
+    this.store$.dispatch(LoadMetadata(request));
+  }
+
+  handleFilterChange(event: string) {
+    this.filterValue = event;
+    const request = {...this.searchCriteria, ...{pageSize: this.pageSize, offset: this.offset, filterValue: this.filterValue}};
+
     this.store$.dispatch(LoadMetadata(request));
   }
 
@@ -55,7 +63,7 @@ export class MetadataExtractionComponent implements OnInit {
 
       if(response) {
         this.searchCriteria = response;
-        response = {...response, ...{pageSize: this.pageSize, offset: this.offset}};
+        response = {...response, ...{pageSize: this.pageSize, offset: this.offset, filterValue: this.filterValue}};
 
         this.store$.dispatch(LoadMetadata(response));
       }

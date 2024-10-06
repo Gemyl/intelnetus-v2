@@ -23,6 +23,7 @@ export class MetadataExtractionService {
     .set('fields', data.fields)
     .set('pageSize', data.pageSize)
     .set('offset', data.offset)
+    .set('filterValue', data.filterValue)
 
     return this.http.get(url, {params: params});
   }

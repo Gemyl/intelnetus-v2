@@ -1,6 +1,7 @@
 from Handlers.Metadata.Handler import get_scopus_fields, process_metadata
 from Services.Database.Service import get_db_connection_and_cursor
 from flask import request, jsonify
+import json
 
 def get_metadata_receiver(scopus_api_key, is_production_env, db):
 
@@ -13,8 +14,9 @@ def get_metadata_receiver(scopus_api_key, is_production_env, db):
         fields_abbreviations = get_scopus_fields(fields)
         page_size = request.args.get("pageSize")
         offset = request.args.get("offset")
+        filter_values = json.loads(request.args.get("filterValue"))
 
-        connection, cursor = get_db_connection_and_cursor(is_production_env)
+        cursor, connection = get_db_connection_and_cursor(is_production_env)
         process_metadata(keywords, start_year, end_year, fields, booleans, scopus_api_key, db, is_production_env)
 
         selection_query = f"SELECT publications.id, publications.doi, publications.title, publications.year, \
@@ -35,15 +37,15 @@ def get_metadata_receiver(scopus_api_key, is_production_env, db):
         condition_query = 'WHERE ('
         for i in range(len(keywords)):
             if (i == 0):
-                temp_query = f'publications.keywords LIKE \'%{keywords[i].lower()}%\' \
+                subquery = f'publications.keywords LIKE \'%{keywords[i].lower()}%\' \
                             OR publications.title LIKE \'%{keywords[i].lower()}%\' \
                             OR publications.abstract LIKE \'%{keywords[i].lower()}%\''
-                condition_query = condition_query + temp_query
+                condition_query = condition_query + subquery
             else:
-                temp_query = f'{booleans[i-1]} `keywords` LIKE \'%{keywords[i].lower()}%\' \
+                subquery = f'{booleans[i-1]} `keywords` LIKE \'%{keywords[i].lower()}%\' \
                             OR publications.title LIKE \'%{keywords[i].lower()}%\' \
                             OR publications.abstract LIKE \'%{keywords[i].lower()}%\''
-                condition_query = condition_query + temp_query
+                condition_query = condition_query + subquery
 
         condition_query = condition_query + ')  AND '
         condition_query = condition_query + f'publications.year >= {start_year} '
@@ -51,15 +53,26 @@ def get_metadata_receiver(scopus_api_key, is_production_env, db):
 
         for i in range(len(fields_abbreviations)):
             if (i == 0):
-                temp_query = f'publications.fields_abbreviations LIKE \'%{fields_abbreviations[i]}%\''
-                condition_query = condition_query + temp_query
+                subquery = f'publications.fields_abbreviations LIKE \'%{fields_abbreviations[i]}%\''
+                condition_query = condition_query + subquery
             else: 
-                temp_query = f' OR publications.fields_abbreviations LIKE \'%{fields_abbreviations[i]}%\''
-                condition_query = condition_query + temp_query
+                subquery = f' OR publications.fields_abbreviations LIKE \'%{fields_abbreviations[i]}%\''
+                condition_query = condition_query + subquery
         
         condition_query = condition_query + ')'
+
+        filter_query = ''
+        if len(filter_values) > 0:
+            for filter_index in range(len(filter_values)):
+                if(filter_index == 0):
+                    subquery = f'{filter_values[filter_index]["entity"]}.{filter_values[filter_index]["field"]} LIKE \'%{filter_values[filter_index]["value"]}%\''
+                else:
+                    subquery = f'{subquery} AND {filter_values[filter_index]["entity"]}.{filter_values[filter_index]["field"]} LIKE \'%{filter_values[filter_index]["value"]}%\''
+
+            filter_query = f'AND ({subquery})'
+
         pagination_query = f" LIMIT {page_size} OFFSET {offset}"
-        metadata_query = f'{condition_query} {pagination_query};'
+        metadata_query = f'{condition_query} {filter_query} {pagination_query};'
 
         query = basic_query + metadata_query
 
@@ -212,7 +225,7 @@ def get_metadata_receiver(scopus_api_key, is_production_env, db):
             "organizationsVariants":organizations_variants
         }
 
-        query = f"SELECT COUNT(DOI) {join_query} {condition_query};"
+        query = f"SELECT COUNT(DOI) {join_query} {condition_query} {filter_query};"
         cursor.execute(query)
         total = cursor.fetchall()[0][0]
 
