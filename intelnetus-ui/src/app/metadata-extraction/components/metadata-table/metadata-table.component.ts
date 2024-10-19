@@ -1,9 +1,11 @@
-import { Component, ViewChild, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, OnInit, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { SortEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { GridFilter, Metadata } from '../../models/metadata-extraction.model';
+import { AuthorVariants, GridFilter, Metadata, OrganizationVariants, PublicationVariants } from '../../models/metadata-extraction.model';
 import { PaginatorState } from 'primeng/paginator';
 import { Entity } from '../../models/metadata-extraction.model';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { VariantsModalComponent } from '../variants-modal/variants-modal.component';
 
 @Component({
   selector: 'app-metadata-table',
@@ -14,18 +16,40 @@ export class MetadataTableComponent implements OnInit {
   @ViewChild("dt") dataGrid: Table;
   @Output() onPageChange: EventEmitter<PaginatorState> = new EventEmitter<PaginatorState>();
   @Output() onFiltersChange: EventEmitter<string> = new EventEmitter<string>();
+  @Output() onVariantsSelection: EventEmitter<string> = new EventEmitter<string>();
   @Input() data: Array<Metadata> = [];
   @Input() loading: boolean;
   @Input() total: number;
+  @Input() noVariants: boolean;
   public isSorted: boolean = false;
   public initialValue: any[];
   public pageSize: number = 10;
   public pageSizes: Array<Number> = [5,10,20];
   public entity = Entity;
   public filters: Array<GridFilter> = [];
+  public variantsToExlude: Array<PublicationVariants | AuthorVariants | OrganizationVariants> = [];
+
+  constructor(
+    public _modalService: NgbModal
+  ) {}
 
   ngOnInit(): void {
     this.initialValue = this.data;
+  }
+
+  openVariantsModal() {
+    let modalRef = this._modalService.open(VariantsModalComponent, {
+      centered: true,
+      backdrop: 'static',
+      size: 'xl'
+    });
+
+    modalRef.result.then((data) => {
+      if(data.length > 0) {
+        this.variantsToExlude = data;
+        this.onVariantsSelection.emit(JSON.stringify(data));
+      }
+    });
   }
 
   onPageSelection(event: PaginatorState) {

@@ -18,6 +18,7 @@ export interface Field {
 
 export interface MetadataState {
     data: Metadata[];
+    variants: Variants;
     total: number;
 }
 
@@ -53,6 +54,47 @@ export interface Metadata {
     organizationCountry: string;
 }
 
+export interface PublicationVariants {
+    id: string;
+    type: number;
+    title: string;
+    citationsCount: number;
+}
+
+export interface AuthorVariants {
+    id: string;
+    type: number;
+    firstName: string;
+    lastName: string;
+    hIndex: string;
+    citationsCount: number;
+}
+
+export interface OrganizationVariants {
+    id: string;
+    type: number;
+    name: string;   
+}
+
+export interface Variant {
+    originals: Array<PublicationVariants | AuthorVariants | OrganizationVariants>;
+    duplicates: Array<PublicationVariants | AuthorVariants | OrganizationVariants>
+}
+
+export interface Variants {
+    publicationsVariants: Variant;
+    authorsVariants: Variant;
+    organizationsVariants: Variant;
+}
+
+export interface GetMetadataResponse {
+    successful: boolean;
+    hasResult: boolean;
+    data: Array<Metadata>;
+    variants: Variants;
+    total: number;
+}
+
 export class GetMetadataRequest {
     public keywords: string;
     public operators: string;
@@ -62,16 +104,18 @@ export class GetMetadataRequest {
     public pageSize: number;
     public offset: number;
     public filterValue: string;
+    public exclude: string;
 
     constructor(
-        keywords: string,
-        operators: string,
-        startYear: string,
-        endYear: string,
-        fields: string,
-        pageSize: number,
-        offset: number,
-        filterValue: string
+        keywords: string = "",
+        operators: string = "",
+        startYear: string = "",
+        endYear: string = "",
+        fields: string = "",
+        pageSize: number = 10,
+        offset: number = 0,
+        filterValue: string = "[]",
+        exclude: string = "[]"
     ) {
         this.keywords = keywords;
         this.operators = operators;
@@ -81,5 +125,6 @@ export class GetMetadataRequest {
         this.pageSize = pageSize;
         this.offset = offset;
         this.filterValue = filterValue;
+        this.exclude = exclude;
     }
 }

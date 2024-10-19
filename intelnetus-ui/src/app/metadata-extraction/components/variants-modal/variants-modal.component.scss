@@ -1,0 +1,14 @@
+@import '../../../../theme-colors.scss';
+
+a {
+    text-decoration: none;
+    color: #3B82F6;
+}
+
+.variants-table {
+    width: 48%;
+    border-style: solid;
+    border-color: $lightGray;
+    border-width: 1px;
+    box-shadow: 0 0 4px, 0 0 4px;
+}

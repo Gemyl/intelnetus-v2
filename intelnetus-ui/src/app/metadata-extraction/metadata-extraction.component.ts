@@ -14,12 +14,10 @@ import { PaginatorState } from 'primeng/paginator';
 })
 export class MetadataExtractionComponent implements OnInit {
   public data: Array<Metadata> = [];
-  public loading: boolean = false;
-  public pageSize: number = 10;
-  public offset: number = 0;
-  public total: number = 0;
-  public filterValue: string = "[]";
   public searchCriteria: GetMetadataRequest;
+  public loading: boolean = false;
+  public total: number = 0;
+  public noVariants: boolean = false;
 
   constructor(
     private store$: Store<AppState>,
@@ -27,28 +25,39 @@ export class MetadataExtractionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.searchCriteria = new GetMetadataRequest();
+
     this.store$
       .select((store) => store.metadataState)
       .subscribe(response => {
         this.data = response.data;
         this.total = response.total;
+        this.noVariants = 
+          response.variants.publicationsVariants.originals.length == 0 &&
+          response.variants.authorsVariants.originals.length == 0 &&
+          response.variants.organizationsVariants.originals.length == 0
+
         this.loading = false;
       });
   }
 
   handlePageChange(event: PaginatorState) {
-    this.pageSize = event.rows;
-    this.offset = event.first;
-    const request = {...this.searchCriteria, ...{pageSize: this.pageSize, offset: this.offset, filterValue: this.filterValue}};
+    this.searchCriteria.pageSize = event.rows;
+    this.searchCriteria.offset = event.first;
         
-    this.store$.dispatch(LoadMetadata(request));
+    this.store$.dispatch(LoadMetadata(this.searchCriteria));
   }
 
   handleFilterChange(event: string) {
-    this.filterValue = event;
-    const request = {...this.searchCriteria, ...{pageSize: this.pageSize, offset: this.offset, filterValue: this.filterValue}};
+    this.searchCriteria.filterValue = event;
 
-    this.store$.dispatch(LoadMetadata(request));
+    this.store$.dispatch(LoadMetadata(this.searchCriteria));
+  }
+
+  handleVariantsSelection(event: string) {
+    this.searchCriteria.exclude = event;
+
+    this.store$.dispatch(LoadMetadata(this.searchCriteria));
   }
 
   openSearchForm() {
@@ -62,10 +71,13 @@ export class MetadataExtractionComponent implements OnInit {
       this.loading = true;
 
       if(response) {
-        this.searchCriteria = response;
-        response = {...response, ...{pageSize: this.pageSize, offset: this.offset, filterValue: this.filterValue}};
+        this.searchCriteria.keywords = response.keywords;
+        this.searchCriteria.operators = response.operators;
+        this.searchCriteria.startYear = response.startYear;
+        this.searchCriteria.endYear = response.endYear;
+        this.searchCriteria.fields = response.fields;
 
-        this.store$.dispatch(LoadMetadata(response));
+        this.store$.dispatch(LoadMetadata(this.searchCriteria));
       }
     });
   }

@@ -6,10 +6,24 @@ import {
 
 export const initialState: MetadataState = {
     data: [],
+    variants: {
+        publicationsVariants: {
+            originals: [],
+            duplicates: [],
+        },
+        authorsVariants: {
+            originals: [],
+            duplicates: []
+        },
+        organizationsVariants: {
+            originals: [],
+            duplicates: []
+        }
+    },
     total: 0
 }
 
 export const metadataExtractionReducer = createReducer(
     initialState,
-    on(LoadMetadataSuccess, (state, { data, total }) => { return { ...state, data, total }})
+    on(LoadMetadataSuccess, (state, { data, variants, total }) => { return { ...state, data, variants, total }})
 );

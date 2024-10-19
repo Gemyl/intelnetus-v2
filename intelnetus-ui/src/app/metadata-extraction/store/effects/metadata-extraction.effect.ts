@@ -20,7 +20,7 @@ export class MetadataExtractionEffects {
             switchMap((action) => 
                 this._metadataExtractionService.loadMetadata(action).pipe(
                     map((response) => {
-                        return LoadMetadataSuccess({ data: response.data, total: response.total });
+                        return LoadMetadataSuccess({data: response.data, variants: response.variants, total: response.total});
                     })
                 )
             )

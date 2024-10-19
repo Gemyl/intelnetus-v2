@@ -1,0 +1,223 @@
+<generic-modal [title]="'Variants Management'" [showSecondButton]="false" (onCloseClicked)="onClose()" (onSubmitClicked)="onSubmit()">
+    <div modalContent>
+        <p-tabView>
+            <p-tabPanel [disabled]="variants.publicationsVariants.originals.length == 0">
+                <ng-template pTemplate="header">
+                    <div class="d-flex flex-row align-items-center justify-content-center">
+                        <div class="d-flex align-items-center justify-content-center rounded-circle bg-white border border-info text-info me-2" 
+                            style="height: 20px; width: 20px; font-size: 10px;">
+                                {{variants.publicationsVariants.originals.length}}
+                        </div>
+                        <fa-icon [icon]="faBook" class="me-1"></fa-icon>
+                        Publications
+                    </div>
+                </ng-template>
+                <div class="d-flex flex-row justify-content-evenly">
+                    <p-table
+                        class="variants-table"
+                        [value]="variants.publicationsVariants.originals" 
+                        [(selection)]="selectedVariants"
+                        [selectionMode]="'multiple'"
+                        [paginator]="true"
+                        [rows]="pageSize">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>
+                                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                    </th>
+                                    <th [width]="1000">
+                                        Title
+                                    </th>
+                                    <th [width]="300">
+                                        Citations Count
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-item>
+                                <tr>
+                                    <td><p-tableCheckbox [value]="item"></p-tableCheckbox></td>
+                                    <td>{{item.title}}</td>
+                                    <td>{{item.citationsCount}}</td>
+                                </tr>
+                            </ng-template>
+                    </p-table>
+                    <p-table 
+                        class="variants-table"
+                        [value]="variants.publicationsVariants.duplicates"
+                        [(selection)]="selectedVariants"
+                        [selectionMode]="'multiple'"
+                        [paginator]="true"
+                        [rows]="pageSize">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>
+                                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                    </th>
+                                    <th [width]="1000">
+                                        Title
+                                    </th>
+                                    <th [width]="300">
+                                        Citations Count
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-item>
+                                <tr>
+                                    <td><p-tableCheckbox [value]="item"></p-tableCheckbox></td>
+                                    <td>{{item.title}}</td>
+                                    <td>{{item.citationsCount}}</td>
+                                </tr>
+                            </ng-template>
+                    </p-table>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel [disabled]="variants.authorsVariants.originals.length == 0">
+                <ng-template pTemplate="header">
+                    <div class="d-flex flex-row align-items-center justify-content-center">
+                        <div class="d-flex align-items-center justify-content-center rounded-circle bg-white border border-info text-info me-2" 
+                            style="height: 20px; width: 20px; font-size: 10px;">
+                                {{variants.authorsVariants.originals.length}}
+                        </div>
+                        <fa-icon [icon]="faUser" class="me-1"></fa-icon>
+                        Authors
+                    </div>
+                </ng-template>
+                <div class="d-flex flex-row justify-content-evenly">
+                    <p-table 
+                        class="variants-table"
+                        [value]="variants.authorsVariants.originals"
+                        [(selection)]="selectedVariants"
+                        [selectionMode]="'multiple'"
+                        [paginator]="true"
+                        [rows]="pageSize">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>
+                                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                    </th>
+                                    <th [width]="500">
+                                        First Name
+                                    </th>
+                                    <th [width]="500">
+                                        Last Name
+                                    </th>
+                                    <th [width]="120">
+                                        hIndex
+                                    </th>
+                                    <th [width]="120">
+                                        Citations Count
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-item>
+                                <tr>
+                                    <td><p-tableCheckbox [value]="item"></p-tableCheckbox></td>
+                                    <td>{{item.firstName}}</td>
+                                    <td>{{item.lastName}}</td>
+                                    <td>{{item.hIndex}}</td>
+                                    <td>{{item.citationsCount}}</td>
+                                </tr>
+                            </ng-template>
+                    </p-table>
+                    <p-table 
+                        class="variants-table"
+                        [value]="variants.authorsVariants.duplicates"
+                        [(selection)]="selectedVariants"
+                        [selectionMode]="'multiple'"
+                        [paginator]="true"
+                        [rows]="pageSize">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>
+                                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                    </th>
+                                    <th [width]="500">
+                                        First Name
+                                    </th>
+                                    <th [width]="500">
+                                        Last Name
+                                    </th>
+                                    <th [width]="120">
+                                        hIndex
+                                    </th>
+                                    <th [width]="120">
+                                        Citations Count
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-item>
+                                <tr>
+                                    <td><p-tableCheckbox [value]="item"></p-tableCheckbox></td>
+                                    <td>{{item.firstName}}</td>
+                                    <td>{{item.lastName}}</td>
+                                    <td>{{item.hIndex}}</td>
+                                    <td>{{item.citationsCount}}</td>
+                                </tr>
+                            </ng-template>
+                    </p-table>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel [disabled]="variants.organizationsVariants.originals.length == 0">
+                <ng-template pTemplate="header">
+                    <div class="d-flex flex-row align-items-center justify-content-center">
+                        <div class="d-flex align-items-center justify-content-center rounded-circle bg-white border border-info text-info me-2" 
+                            style="height: 20px; width: 20px; font-size: 10px;">
+                                {{variants.organizationsVariants.originals.length}}
+                        </div>
+                        <fa-icon [icon]="faBuilding" class="me-1"></fa-icon>
+                        Organizations
+                    </div>
+                </ng-template>
+                <div class="d-flex flex-row justify-content-evenly">
+                    <p-table 
+                        class="variants-table"
+                        [value]="variants.organizationsVariants.originals"
+                        [(selection)]="selectedVariants"
+                        [selectionMode]="'multiple'"
+                        [paginator]="true"
+                        [rows]="pageSize">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>
+                                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                    </th>
+                                    <th [width]="1000">
+                                        Name
+                                    </th>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-item>
+                                <tr>
+                                    <td><p-tableCheckbox [value]="item"></p-tableCheckbox></td>
+                                    <td>{{item.name}}</td>
+                                </tr>
+                            </ng-template>
+                    </p-table>
+                    <p-table 
+                        class="variants-table"
+                        [value]="variants.organizationsVariants.duplicates"
+                        [(selection)]="selectedVariants"
+                        [selectionMode]="'multiple'"
+                        [paginator]="true"
+                        [rows]="pageSize">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>
+                                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                    </th>
+                                    <th [width]="1000">
+                                        Name
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-item>
+                                <tr>
+                                    <td><p-tableCheckbox [value]="item"></p-tableCheckbox></td>
+                                    <td>{{item.name}}</td>
+                                </tr>
+                            </ng-template>
+                    </p-table>
+                </div>
+            </p-tabPanel>
+        </p-tabView>
+    </div>
+</generic-modal>

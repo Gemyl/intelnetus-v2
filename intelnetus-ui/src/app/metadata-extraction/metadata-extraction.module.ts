@@ -15,13 +15,16 @@ import { PaginatorModule } from 'primeng/paginator';
 import { MetadataTableComponent } from './components/metadata-table/metadata-table.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MetadataExtractionRoutingModule } from './metadata-extraction-routing.module';
+import { VariantsModalComponent } from './components/variants-modal/variants-modal.component';
+import { TabViewModule } from 'primeng/tabview';
 
 @NgModule({
   declarations: [
     MetadataExtractionComponent,
     MetadataSearchFormComponent,
     MetadataTableComponent,
-    GenericModalComponent
+    GenericModalComponent,
+    VariantsModalComponent
   ],
   imports: [
     CommonModule,
@@ -34,7 +37,8 @@ import { MetadataExtractionRoutingModule } from './metadata-extraction-routing.m
     TableModule,
     FontAwesomeModule,
     PaginatorModule,
-    MetadataExtractionRoutingModule
+    MetadataExtractionRoutingModule,
+    TabViewModule
   ]
 })
 export class MetadataExtractionModule { }
