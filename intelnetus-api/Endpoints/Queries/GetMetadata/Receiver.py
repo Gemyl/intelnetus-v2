@@ -15,6 +15,7 @@ def get_metadata_receiver(scopus_api_key, is_production_env, db):
         page_size = request.args.get("pageSize")
         offset = request.args.get("offset")
         filter_values = json.loads(request.args.get("filterValue"))
+        excluded_variants = json.loads(request.args.get("exclude"))
 
         cursor, connection = get_db_connection_and_cursor(is_production_env)
         process_metadata(keywords, start_year, end_year, fields, booleans, scopus_api_key, db, is_production_env)
@@ -34,32 +35,36 @@ def get_metadata_receiver(scopus_api_key, is_production_env, db):
         
         basic_query = selection_query + join_query
 
-        condition_query = 'WHERE ('
+        criteria_query = 'WHERE ('
         for i in range(len(keywords)):
             if (i == 0):
                 subquery = f'publications.keywords LIKE \'%{keywords[i].lower()}%\' \
                             OR publications.title LIKE \'%{keywords[i].lower()}%\' \
                             OR publications.abstract LIKE \'%{keywords[i].lower()}%\''
-                condition_query = condition_query + subquery
+                criteria_query = criteria_query + subquery
             else:
                 subquery = f'{booleans[i-1]} `keywords` LIKE \'%{keywords[i].lower()}%\' \
                             OR publications.title LIKE \'%{keywords[i].lower()}%\' \
                             OR publications.abstract LIKE \'%{keywords[i].lower()}%\''
-                condition_query = condition_query + subquery
+                criteria_query = criteria_query + subquery
 
-        condition_query = condition_query + ')  AND '
-        condition_query = condition_query + f'publications.year >= {start_year} '
-        condition_query = condition_query + f'AND publications.year <= {end_year} AND  ('
+        criteria_query = criteria_query + ')  AND '
+        criteria_query = criteria_query + f'publications.year >= {start_year} '
+        criteria_query = criteria_query + f'AND publications.year <= {end_year} AND  ('
 
         for i in range(len(fields_abbreviations)):
             if (i == 0):
                 subquery = f'publications.fields_abbreviations LIKE \'%{fields_abbreviations[i]}%\''
-                condition_query = condition_query + subquery
+                criteria_query = criteria_query + subquery
             else: 
                 subquery = f' OR publications.fields_abbreviations LIKE \'%{fields_abbreviations[i]}%\''
-                condition_query = condition_query + subquery
+                criteria_query = criteria_query + subquery
         
-        condition_query = condition_query + ')'
+        criteria_query = criteria_query + ')'
+
+        excluded_variants_query = ''
+        for i in range(len(excluded_variants)):
+            excluded_variants_query += f'AND {excluded_variants[i]["type"]}.id != \'{excluded_variants[i]["id"]}\''
 
         filter_query = ''
         if len(filter_values) > 0:
@@ -72,7 +77,7 @@ def get_metadata_receiver(scopus_api_key, is_production_env, db):
             filter_query = f'AND ({subquery})'
 
         pagination_query = f" LIMIT {page_size} OFFSET {offset}"
-        metadata_query = f'{condition_query} {filter_query} {pagination_query};'
+        metadata_query = f'{criteria_query} {excluded_variants_query} {filter_query} {pagination_query};'
 
         query = basic_query + metadata_query
 
@@ -225,7 +230,7 @@ def get_metadata_receiver(scopus_api_key, is_production_env, db):
             "organizationsVariants":organizations_variants
         }
 
-        query = f"SELECT COUNT(DOI) {join_query} {condition_query} {filter_query};"
+        query = f"SELECT COUNT(DOI) {join_query} {criteria_query} {filter_query};"
         cursor.execute(query)
         total = cursor.fetchall()[0][0]
 
