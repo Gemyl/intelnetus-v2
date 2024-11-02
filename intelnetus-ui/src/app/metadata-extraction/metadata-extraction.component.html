@@ -2,7 +2,16 @@
     <h1 class="fw-bolder mb-2">Your Search Begines Here!</h1>
     <h5 class="mb-4">Open the form and submit your search criteria to fetch metadata for the publications you wish</h5>
     <button type="button" class="btn btn-secondary" (click)="openSearchForm()">Open Form</button>
-    <app-metadata-table class="w-85 mt-5" [data]="data" [loading]="loading" [total]="total" [noVariants]="noVariants" 
-        (onPageChange)="handlePageChange($event)" (onFiltersChange)="handleFilterChange($event)" (onVariantsSelection)="handleVariantsSelection($event)">
+    <app-metadata-table 
+        class="w-85 mt-5" 
+        [data]="data" 
+        [loading]="loading" 
+        [total]="total" 
+        [noVariants]="noVariants"
+        [variants]="variants" 
+        [selectedVariants]="searchCriteria.exclude" 
+        (onPageChange)="handlePageChange($event)" 
+        (onFiltersChange)="handleFilterChange($event)" 
+        (onVariantsSelection)="handleVariantsSelection($event)">
     </app-metadata-table>
 </div>

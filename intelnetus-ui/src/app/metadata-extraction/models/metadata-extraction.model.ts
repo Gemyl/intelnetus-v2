@@ -56,24 +56,27 @@ export interface Metadata {
 
 export interface PublicationVariants {
     id: string;
-    type: number;
+    type: string;
     title: string;
     citationsCount: number;
+    selected: boolean;
 }
 
 export interface AuthorVariants {
     id: string;
-    type: number;
+    type: string;
     firstName: string;
     lastName: string;
-    hIndex: string;
+    hIndex: number;
     citationsCount: number;
+    selected: boolean;
 }
 
 export interface OrganizationVariants {
     id: string;
-    type: number;
+    type: string;
     name: string;   
+    selected: boolean;
 }
 
 export interface Variant {

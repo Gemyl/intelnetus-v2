@@ -3,7 +3,13 @@
         <h3>Publications Metadata</h3>
     </div>
     <div class="pb-2">
-        <button class="btn btn-light border border-light-gray" [disabled]="noVariants" (click)="openVariantsModal()">View Duplicates</button>
+        <button 
+            class="btn btn-light border border-light-gray" 
+            [disabled]="noVariants" 
+            (click)="openVariantsModal()"
+            >
+                View Duplicates
+        </button>
     </div>
     <div>
         <p-table 

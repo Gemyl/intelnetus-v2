@@ -4,7 +4,7 @@ import { LoadMetadata } from './store/actions/metadata-extraction.action';
 import { AppState } from '../app.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MetadataSearchFormComponent } from './components/metadata-search-form/metadata-search-form.component';
-import { GetMetadataRequest, Metadata } from './models/metadata-extraction.model';
+import { GetMetadataRequest, Metadata, Variants } from './models/metadata-extraction.model';
 import { PaginatorState } from 'primeng/paginator';
 
 @Component({
@@ -15,6 +15,7 @@ import { PaginatorState } from 'primeng/paginator';
 export class MetadataExtractionComponent implements OnInit {
   public data: Array<Metadata> = [];
   public searchCriteria: GetMetadataRequest;
+  public variants: Variants;
   public loading: boolean = false;
   public total: number = 0;
   public noVariants: boolean = false;
@@ -26,12 +27,28 @@ export class MetadataExtractionComponent implements OnInit {
 
   ngOnInit(): void {
     this.searchCriteria = new GetMetadataRequest();
+    this.variants = {
+      publicationsVariants: {
+        originals: [],
+        duplicates: []
+      },
+      authorsVariants: {
+        originals: [],
+        duplicates: []
+      },
+      organizationsVariants: {
+        originals: [],
+        duplicates: []
+      }
+    };
 
     this.store$
       .select((store) => store.metadataState)
       .subscribe(response => {
         this.data = response.data;
         this.total = response.total;
+        this.variants = response.variants;
+
         this.noVariants = 
           response.variants.publicationsVariants.originals.length == 0 &&
           response.variants.authorsVariants.originals.length == 0 &&
@@ -45,19 +62,24 @@ export class MetadataExtractionComponent implements OnInit {
     this.searchCriteria.pageSize = event.rows;
     this.searchCriteria.offset = event.first;
         
+    this.loading = true;
     this.store$.dispatch(LoadMetadata(this.searchCriteria));
   }
 
   handleFilterChange(event: string) {
     this.searchCriteria.filterValue = event;
 
+    this.loading = true;
     this.store$.dispatch(LoadMetadata(this.searchCriteria));
   }
 
   handleVariantsSelection(event: string) {
     this.searchCriteria.exclude = event;
 
-    this.store$.dispatch(LoadMetadata(this.searchCriteria));
+    if(this.searchCriteria.keywords) {
+      this.loading = true;
+      this.store$.dispatch(LoadMetadata(this.searchCriteria));
+    }
   }
 
   openSearchForm() {

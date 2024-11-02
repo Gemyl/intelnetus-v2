@@ -136,7 +136,8 @@ def get_metadata_receiver(scopus_api_key, is_production_env, db):
                 publications_variants["originals"].append({
                     "id":variant_data[0],
                     "title":variant_data[1],
-                    "citationsCount":variant_data[2]
+                    "citationsCount":variant_data[2],
+                    "selected": False
                 })
 
                 sub_query = f"SELECT publications.id, publications.title, \
@@ -147,7 +148,8 @@ def get_metadata_receiver(scopus_api_key, is_production_env, db):
                 publications_variants["duplicates"].append({
                     "id":variant_data[0],
                     "title":variant_data[1],
-                    "citationsCount":variant_data[2]
+                    "citationsCount":variant_data[2],
+                    "selected": False
                 })
 
         authors_variants = {
@@ -175,7 +177,8 @@ def get_metadata_receiver(scopus_api_key, is_production_env, db):
                     "firstName":variant_data[1],
                     "lastName":variant_data[2],
                     "hIndex":variant_data[3],
-                    "citationsCount":variant_data[4]
+                    "citationsCount":variant_data[4],
+                    "selected": False
                 })
 
                 sub_query = f"SELECT authors.id, authors.first_name, \
@@ -189,7 +192,8 @@ def get_metadata_receiver(scopus_api_key, is_production_env, db):
                     "firstName":variant_data[1],
                     "lastName":variant_data[2],
                     "hIndex":variant_data[3],
-                    "citationsCount":variant_data[4]
+                    "citationsCount":variant_data[4],
+                    "selected": False
                 })
 
         organizations_variants = {
@@ -212,7 +216,8 @@ def get_metadata_receiver(scopus_api_key, is_production_env, db):
                 variant_data = cursor.fetchall()[0]
                 organizations_variants["originals"].append({
                     "id":variant_data[0],
-                    "name":variant_data[1]
+                    "name":variant_data[1],
+                    "selected": False
                 })
 
                 sub_query = f"SELECT organizations.id, organizations.name FROM organizations \
@@ -221,7 +226,8 @@ def get_metadata_receiver(scopus_api_key, is_production_env, db):
                 variant_data = cursor.fetchall()[0]
                 organizations_variants["duplicates"].append({
                     "id":variant_data[0],
-                    "name":variant_data[1]
+                    "name":variant_data[1],
+                    "selected": False
                 })
 
         variants = {

@@ -16,14 +16,12 @@
                     <p-table
                         class="variants-table"
                         [value]="variants.publicationsVariants.originals" 
-                        [(selection)]="selectedVariants"
-                        [selectionMode]="'multiple'"
                         [paginator]="true"
                         [rows]="pageSize">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th>
-                                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                        <input type="checkbox" style="height: 20px; width: 20px;" (click)="onSelectAllPublicationsVariants($event, true)">
                                     </th>
                                     <th [width]="1000">
                                         Title
@@ -35,7 +33,7 @@
                             </ng-template>
                             <ng-template pTemplate="body" let-item>
                                 <tr>
-                                    <td><p-tableCheckbox [value]="item"></p-tableCheckbox></td>
+                                    <td><input type="checkbox" [checked]="item.selected" (click)="onSelectVariant($event, item)"></td>
                                     <td>{{item.title}}</td>
                                     <td>{{item.citationsCount}}</td>
                                 </tr>
@@ -44,14 +42,12 @@
                     <p-table 
                         class="variants-table"
                         [value]="variants.publicationsVariants.duplicates"
-                        [(selection)]="selectedVariants"
-                        [selectionMode]="'multiple'"
                         [paginator]="true"
                         [rows]="pageSize">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th>
-                                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                        <input type="checkbox" style="height: 20px; width: 20px;" (click)="onSelectAllPublicationsVariants($event, false)">
                                     </th>
                                     <th [width]="1000">
                                         Title
@@ -63,7 +59,7 @@
                             </ng-template>
                             <ng-template pTemplate="body" let-item>
                                 <tr>
-                                    <td><p-tableCheckbox [value]="item"></p-tableCheckbox></td>
+                                    <td><input type="checkbox" [checked]="item.selected" (click)="onSelectVariant($event, item)"></td>
                                     <td>{{item.title}}</td>
                                     <td>{{item.citationsCount}}</td>
                                 </tr>
@@ -93,7 +89,7 @@
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th>
-                                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                        <input type="checkbox" style="height: 20px; width: 20px;" (click)="onSelectAllAuthorsVariants($event, true)">
                                     </th>
                                     <th [width]="500">
                                         First Name
@@ -111,7 +107,7 @@
                             </ng-template>
                             <ng-template pTemplate="body" let-item>
                                 <tr>
-                                    <td><p-tableCheckbox [value]="item"></p-tableCheckbox></td>
+                                    <td><input type="checkbox" [checked]="item.selected" (click)="onSelectVariant($event, item)"></td>
                                     <td>{{item.firstName}}</td>
                                     <td>{{item.lastName}}</td>
                                     <td>{{item.hIndex}}</td>
@@ -122,14 +118,12 @@
                     <p-table 
                         class="variants-table"
                         [value]="variants.authorsVariants.duplicates"
-                        [(selection)]="selectedVariants"
-                        [selectionMode]="'multiple'"
                         [paginator]="true"
                         [rows]="pageSize">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th>
-                                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                        <input type="checkbox" style="height: 20px; width: 20px;" (click)="onSelectAllAuthorsVariants($event, false)">
                                     </th>
                                     <th [width]="500">
                                         First Name
@@ -147,7 +141,7 @@
                             </ng-template>
                             <ng-template pTemplate="body" let-item>
                                 <tr>
-                                    <td><p-tableCheckbox [value]="item"></p-tableCheckbox></td>
+                                    <td><input type="checkbox" [checked]="item.selected" (click)="onSelectVariant($event, item)"></td>
                                     <td>{{item.firstName}}</td>
                                     <td>{{item.lastName}}</td>
                                     <td>{{item.hIndex}}</td>
@@ -172,14 +166,12 @@
                     <p-table 
                         class="variants-table"
                         [value]="variants.organizationsVariants.originals"
-                        [(selection)]="selectedVariants"
-                        [selectionMode]="'multiple'"
                         [paginator]="true"
                         [rows]="pageSize">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th>
-                                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                        <input type="checkbox" style="height: 20px; width: 20px;" (click)="onSelectAllOrganizationsVariants($event, true)">
                                     </th>
                                     <th [width]="1000">
                                         Name
@@ -187,7 +179,7 @@
                             </ng-template>
                             <ng-template pTemplate="body" let-item>
                                 <tr>
-                                    <td><p-tableCheckbox [value]="item"></p-tableCheckbox></td>
+                                    <td><input type="checkbox" [checked]="item.selected" (click)="onSelectVariant($event, item)"></td>
                                     <td>{{item.name}}</td>
                                 </tr>
                             </ng-template>
@@ -195,14 +187,12 @@
                     <p-table 
                         class="variants-table"
                         [value]="variants.organizationsVariants.duplicates"
-                        [(selection)]="selectedVariants"
-                        [selectionMode]="'multiple'"
                         [paginator]="true"
                         [rows]="pageSize">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th>
-                                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                        <input type="checkbox" style="height: 20px; width: 20px;" (click)="onSelectAllOrganizationsVariants($event, false)">
                                     </th>
                                     <th [width]="1000">
                                         Name
@@ -211,7 +201,7 @@
                             </ng-template>
                             <ng-template pTemplate="body" let-item>
                                 <tr>
-                                    <td><p-tableCheckbox [value]="item"></p-tableCheckbox></td>
+                                    <td><input type="checkbox" [checked]="item.selected" (click)="onSelectVariant($event, item)"></td>
                                     <td>{{item.name}}</td>
                                 </tr>
                             </ng-template>

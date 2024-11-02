@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { SortEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { AuthorVariants, GridFilter, Metadata, OrganizationVariants, PublicationVariants } from '../../models/metadata-extraction.model';
+import { AuthorVariants, GridFilter, Metadata, OrganizationVariants, PublicationVariants, Variants } from '../../models/metadata-extraction.model';
 import { PaginatorState } from 'primeng/paginator';
 import { Entity } from '../../models/metadata-extraction.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -21,6 +21,10 @@ export class MetadataTableComponent implements OnInit {
   @Input() loading: boolean;
   @Input() total: number;
   @Input() noVariants: boolean;
+  @Input() variants: Variants;
+  @Input() set selectedVariants(data: string) {
+    this.variantsToExlude = JSON.parse(data);
+  }
   public isSorted: boolean = false;
   public initialValue: any[];
   public pageSize: number = 10;
@@ -28,7 +32,7 @@ export class MetadataTableComponent implements OnInit {
   public entity = Entity;
   public filters: Array<GridFilter> = [];
   public variantsToExlude: Array<PublicationVariants | AuthorVariants | OrganizationVariants> = [];
-
+  
   constructor(
     public _modalService: NgbModal
   ) {}
@@ -44,11 +48,12 @@ export class MetadataTableComponent implements OnInit {
       size: 'xl'
     });
 
+    modalRef.componentInstance.variants = this.variants;
+    modalRef.componentInstance.selectedVariants = this.variantsToExlude;
+    
     modalRef.result.then((data) => {
-      if(data.length > 0) {
         this.variantsToExlude = data;
         this.onVariantsSelection.emit(JSON.stringify(data));
-      }
     });
   }
 
