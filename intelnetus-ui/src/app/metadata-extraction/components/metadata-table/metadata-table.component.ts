@@ -6,6 +6,7 @@ import { PaginatorState } from 'primeng/paginator';
 import { Entity } from '../../models/metadata-extraction.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { VariantsModalComponent } from '../variants-modal/variants-modal.component';
+import { ViewDetailsComponent } from '../view-details/view-details.component';
 
 @Component({
   selector: 'app-metadata-table',
@@ -126,5 +127,16 @@ export class MetadataTableComponent implements OnInit {
 
       return order * result;
     });
+  }
+
+  onClickViewDetails(field: string, text: string) {
+    let modalRef = this._modalService.open(ViewDetailsComponent, {
+      backdrop: 'static',
+      centered: true,
+      size: 'lg'
+    });
+
+    modalRef.componentInstance.title = field;
+    modalRef.componentInstance.text = text;
   }
 }

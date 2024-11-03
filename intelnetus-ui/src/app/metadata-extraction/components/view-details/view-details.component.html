@@ -1,0 +1,16 @@
+<generic-modal 
+    [title]="title" 
+    [showSubmitButton]="false"
+    [showSecondButton]="false"
+    (onCloseClicked)="onClose()"
+    >
+    <div modalContent>
+        <textarea
+            [rows]="10"
+            [cols]="40"
+            [value]="text"
+            [disabled]="true"
+            class="w-100 p-2"
+        ></textarea>
+    </div>
+</generic-modal>

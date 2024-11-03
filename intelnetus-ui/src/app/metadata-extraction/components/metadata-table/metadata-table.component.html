@@ -14,7 +14,7 @@
     <div>
         <p-table 
             #dt
-            [style]="{'display':'flex', 'max-height':'45vh'}"
+            [style]="{'display':'flex', 'max-height':'70vh'}"
             [value]="data" 
             [paginator]="false"
             [sortMode]="'multiple'"
@@ -312,14 +312,46 @@
             <ng-template pTemplate="body" let-item>
                 <tr>
                     <td>{{item.publicationDoi}}</td>
-                    <td>{{item.publicationTitle}}</td>
+                    <td>
+                        @if(item.publicationTitle.length <= 30) {
+                            {{item.publicationTitle}}
+                        } @else {
+                            <div style="cursor: pointer;" (click)="onClickViewDetails('Title', item.publicationTitle)">
+                                {{item.publicationTitle.substring(0, 31)}}...
+                            </div>    
+                        }
+                    </td>
                     <td>{{item.publicationYear}}</td>
                     <td>{{item.publicationCitationsCount}}</td>
-                    <td>{{item.publicationKeywords}}</td>
-                    <td>{{item.publicationFields}}</td>
+                    <td>
+                        @if(item.publicationKeywords.length <= 30) {
+                            {{item.publicationKeywords}}
+                        } @else {
+                            <div style="cursor: pointer;" (click)="onClickViewDetails('Keywords', item.publicationKeywords)">
+                                {{item.publicationKeywords.substring(0, 31)}}...
+                            </div>    
+                        }
+                    </td>
+                    <td>
+                        @if(item.publicationFields.length <= 30) {
+                            {{item.publicationFields}}
+                        } @else {
+                            <div style="cursor: pointer;" (click)="onClickViewDetails('Fields', item.publicationFields)">
+                                {{item.publicationFields.substring(0, 31)}}...
+                            </div>    
+                        }
+                    </td>
                     <td>{{item.authorFirstName}}</td>
                     <td>{{item.authorLastName}}</td>
-                    <td>{{item.authorFieldsOfStudy}}</td>
+                    <td>
+                        @if(item.authorFieldsOfStudy.length <= 30) {
+                            {{item.publicationFieldsOfStudy}}
+                        } @else {
+                            <div style="cursor: pointer;" (click)="onClickViewDetails('Fields Of Study', item.authorFieldsOfStudy)">
+                                {{item.authorFieldsOfStudy.substring(0, 31)}}...
+                            </div>    
+                        }
+                    </td>
                     <td>{{item.authorCitationsCount}}</td>
                     <td>{{item.authorhIndex}}</td>
                     <td>{{item.organizationName}}</td>

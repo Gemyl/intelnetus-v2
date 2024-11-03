@@ -17,6 +17,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MetadataExtractionRoutingModule } from './metadata-extraction-routing.module';
 import { VariantsModalComponent } from './components/variants-modal/variants-modal.component';
 import { TabViewModule } from 'primeng/tabview';
+import { ViewDetailsComponent } from './components/view-details/view-details.component';
+import { InputTextareaModule} from 'primeng/inputtextarea';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { TabViewModule } from 'primeng/tabview';
     MetadataSearchFormComponent,
     MetadataTableComponent,
     GenericModalComponent,
-    VariantsModalComponent
+    VariantsModalComponent,
+    ViewDetailsComponent
   ],
   imports: [
     CommonModule,
@@ -38,7 +41,8 @@ import { TabViewModule } from 'primeng/tabview';
     FontAwesomeModule,
     PaginatorModule,
     MetadataExtractionRoutingModule,
-    TabViewModule
+    TabViewModule,
+    InputTextareaModule
   ]
 })
 export class MetadataExtractionModule { }
