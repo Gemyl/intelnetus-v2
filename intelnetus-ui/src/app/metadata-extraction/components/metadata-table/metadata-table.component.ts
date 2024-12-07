@@ -7,6 +7,8 @@ import { Entity } from '../../models/metadata-extraction.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { VariantsModalComponent } from '../variants-modal/variants-modal.component';
 import { ViewDetailsComponent } from '../view-details/view-details.component';
+import { faFileExcel } from '@fortawesome/free-solid-svg-icons';
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-metadata-table',
@@ -18,6 +20,7 @@ export class MetadataTableComponent implements OnInit {
   @Output() onPageChange: EventEmitter<PaginatorState> = new EventEmitter<PaginatorState>();
   @Output() onFiltersChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() onVariantsSelection: EventEmitter<string> = new EventEmitter<string>();
+  @Output() onExportExcel: EventEmitter<null> = new EventEmitter<null>();
   @Input() data: Array<Metadata> = [];
   @Input() loading: boolean;
   @Input() total: number;
@@ -33,6 +36,9 @@ export class MetadataTableComponent implements OnInit {
   public entity = Entity;
   public filters: Array<GridFilter> = [];
   public variantsToExlude: Array<PublicationVariants | AuthorVariants | OrganizationVariants> = [];
+
+  faFileExcel = faFileExcel;
+  faCopy = faCopy;
   
   constructor(
     public _modalService: NgbModal
@@ -138,5 +144,9 @@ export class MetadataTableComponent implements OnInit {
 
     modalRef.componentInstance.title = field;
     modalRef.componentInstance.text = text;
+  }
+
+  exportExcel() {
+    this.onExportExcel.emit(null);
   }
 }

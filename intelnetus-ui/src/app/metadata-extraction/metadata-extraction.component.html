@@ -12,6 +12,7 @@
         [selectedVariants]="searchCriteria.exclude" 
         (onPageChange)="handlePageChange($event)" 
         (onFiltersChange)="handleFilterChange($event)" 
-        (onVariantsSelection)="handleVariantsSelection($event)">
+        (onVariantsSelection)="handleVariantsSelection($event)"
+        (onExportExcel)="handleExportExcel()">
     </app-metadata-table>
 </div>

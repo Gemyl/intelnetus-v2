@@ -8,7 +8,16 @@
             [disabled]="noVariants" 
             (click)="openVariantsModal()"
             >
-                View Duplicates
+                <fa-icon [icon]="faCopy" [size]="'sm'"></fa-icon>
+                Manage Duplicates
+        </button>
+        <button
+            class="btn btn-light border border-light-gray ms-2" 
+            [disabled]="data.length == 0"
+            (click)="exportExcel()"
+            >
+                <fa-icon [icon]="faFileExcel" [size]="'sm'"></fa-icon> 
+                Download Excel
         </button>
     </div>
     <div>

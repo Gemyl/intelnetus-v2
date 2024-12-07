@@ -19,6 +19,7 @@ import { VariantsModalComponent } from './components/variants-modal/variants-mod
 import { TabViewModule } from 'primeng/tabview';
 import { ViewDetailsComponent } from './components/view-details/view-details.component';
 import { InputTextareaModule} from 'primeng/inputtextarea';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,9 @@ import { InputTextareaModule} from 'primeng/inputtextarea';
     MetadataExtractionRoutingModule,
     TabViewModule,
     InputTextareaModule
+  ],
+  providers: [
+    DatePipe
   ]
 })
 export class MetadataExtractionModule { }
