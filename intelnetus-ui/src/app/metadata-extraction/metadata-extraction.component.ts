@@ -90,9 +90,10 @@ export class MetadataExtractionComponent implements OnInit {
     });
 
     modalRef.result.then(response => {
-      this.loading = true;
-
+      
       if(response) {
+        this.loading = true;
+        
         this.searchCriteria.keywords = response.keywords;
         this.searchCriteria.operators = response.operators;
         this.searchCriteria.startYear = response.startYear;
