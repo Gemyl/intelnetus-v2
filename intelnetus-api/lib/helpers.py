@@ -1,3 +1,23 @@
+from lib.constants import SCOPUS_FIELDS
+
+def get_scopus_fields(fields_ids):
+    returned_fields = []
+    for id in fields_ids:
+        returned_fields.append(SCOPUS_FIELDS[int(id)])
+
+    return returned_fields
+
+def get_most_recent_profile(first_date, seconnectiond_date):
+    """Return the most recent date between two dates."""
+    return max(first_date, seconnectiond_date, key=lambda x: x[::-1])
+
+def get_affiliations_ids(affiliations):
+
+    if affiliations != None:
+        return [affil for affil in affiliations.split(";")]
+    else:
+        return "-"
+    
 def get_safe_attribute(obj, attribute, attributeType):
     try:
         if isinstance(obj, dict):
@@ -46,7 +66,6 @@ def get_string_from_list(list):
 
     return string
 
-
 def get_sql_syntax(string):
 
     if string != None:
@@ -62,11 +81,3 @@ def remove_common_words(abstract, common_words):
         [word for word in abstract_list if word.lower() not in common_words])
     
     return abstract_string
-
-
-def get_affiliations_ids(affiliations):
-
-    if affiliations != None:
-        return [affil for affil in affiliations.split(";")]
-    else:
-        return "-"

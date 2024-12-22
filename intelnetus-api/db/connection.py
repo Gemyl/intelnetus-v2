@@ -2,7 +2,20 @@ import mysql.connector as connector
 from dotenv import load_dotenv
 import os
 
-def get_db_connection_and_cursor(is_production_env):
+def get_db_connection_uri(is_production_env):
+    if(is_production_env):
+        host = os.environ.get('DB_HOST_PROD')
+    else:
+        host = os.environ.get('DB_HOST_DEV')
+
+    port = os.environ.get('DB_PORT')
+    user = os.environ.get('DB_USER')
+    password = os.environ.get('DB_PASSWORD')
+    database = os.environ.get('DB_NAME')
+
+    return f'mysql+pymysql://{user}:{password}@{host}:{port}/{database}'
+
+def get_db_cursor(is_production_env):
     
     load_dotenv()
     if(is_production_env):
@@ -24,14 +37,14 @@ def get_db_connection_and_cursor(is_production_env):
         auth_plugin='mysql_native_password'
     )
     
-    return connection.cursor(), connection, 
+    return connection.cursor()
 
         
 def expand_column_size(new_length, table_name, column_name, is_production_env):
     new_length_int = str(new_length)
     new_table_name = f"{table_name}"
 
-    cursor, connection = get_db_connection_and_cursor(is_production_env)
+    cursor, connection = get_db_cursor(is_production_env)
 
     query = f"ALTER TABLE {new_table_name} MODIFY COLUMN {column_name} VARCHAR({new_length_int});"
     cursor.execute(query)

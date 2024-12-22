@@ -1,6 +1,7 @@
 from unittest.mock import Mock, patch
 import mysql.connector as connector
 import re
+import os
 
 # FUNCTIONS USED
 def get_db_mock_connection_and_cursor():
@@ -10,11 +11,17 @@ def get_db_mock_connection_and_cursor():
     return connection, cursor
 
 def get_db_connection_and_cursor():
-    connection = connector.connect(host='localhost',
-                                port='3306',
-                                user='root',
-                                password='gemyl',
-                                database="scopus",
+    host = os.environ.get('DB_HOST_DEV')
+    port = os.environ.get('DB_PORT')
+    user = os.environ.get('DB_USER')
+    password = os.environ.get('DB_PASSWORD')
+    database = os.environ.get('DB_NAME')
+
+    connection = connector.connect(host=host,
+                                port=port,
+                                user=user,
+                                password=password,
+                                database=database,
                                 auth_plugin='mysql_native_password')
     
     return connection.cursor(), connection
