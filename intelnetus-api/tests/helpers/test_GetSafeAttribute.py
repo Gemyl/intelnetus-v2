@@ -1,26 +1,4 @@
-# UNDER TEST FUNCTIONS
-def get_safe_attribute(obj, attribute, attribute_type):
-    try:
-        if isinstance(obj, dict):
-            value = obj.get(attribute)
-            if((value == None) & (attribute_type == "number")):
-               value = 999999
-            elif (obj.get(attribute) == None):
-                value = "-"
-        else:
-            value = getattr(obj, attribute)
-            if((value == None) & (attribute_type == "number")):
-               value = 999999
-            elif (value == None):
-                value = "-"
-
-    except (AttributeError, KeyError):
-        if attribute_type == "number":
-            value = 999999
-        else:
-            value = "-"
-    
-    return value
+from lib.helpers import get_safe_attribute
 
 # TESTS
 def test_get_safe_attribute_from_empty_object():

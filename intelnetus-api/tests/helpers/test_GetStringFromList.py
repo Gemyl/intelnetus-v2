@@ -1,12 +1,4 @@
-# UNDER TEST FUNCTIONS
-def get_string_from_list(list):
-
-    if list != None:
-        string = ', '.join([str(i).lower() for i in list])
-    else:
-        string = ' '
-
-    return string
+from lib.helpers import get_string_from_list
 
 # TESTS
 def test_get_string_from_list():

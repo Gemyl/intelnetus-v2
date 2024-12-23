@@ -1,10 +1,4 @@
-# UNDER TEST FUNCTIONS
-def get_sql_syntax(string):
-
-    if string != None:
-        return string.replace("\'", " ")
-    else:
-        return "-"
+from lib.helpers import get_sql_syntax
     
 # TESTS
 def test_get_sql_syntax():

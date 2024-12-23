@@ -49,7 +49,7 @@ def build_keywords_query(keywords, booleans):
         if i == len(keywords)-1:
             keywords_list = keywords_list + '{' + keywords[i] + '}'
         else:
-            keywords_list = keywords_list + '{' + keywords[i] + '} ' + booleans[i]
+            keywords_list = keywords_list + '{' + keywords[i] + '}' + f" {booleans[i]} "
 
     keywords_list = keywords_list + ')'
     keywords = keywords_list

@@ -37,7 +37,7 @@ def get_db_cursor(is_production_env):
         auth_plugin='mysql_native_password'
     )
     
-    return connection.cursor()
+    return connection.cursor(), connection
 
         
 def expand_column_size(new_length, table_name, column_name, is_production_env):

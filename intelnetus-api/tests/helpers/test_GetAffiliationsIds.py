@@ -1,10 +1,4 @@
-# UNDER TEST FUNCTIONS
-def get_affiliations_ids(affiliations):
-
-    if affiliations != None:
-        return [affil for affil in affiliations.split(";")]
-    else:
-        return "-"
+from lib.helpers import get_affiliations_ids
     
 # TESTS
 def test_get_afiliations_ids():

@@ -1,7 +1,6 @@
+from db.connection import get_db_cursor
 from unittest.mock import Mock, patch
-import mysql.connector as connector
 import re
-import os
 
 # FUNCTIONS USED
 def get_db_mock_connection_and_cursor():
@@ -9,44 +8,6 @@ def get_db_mock_connection_and_cursor():
     cursor = connection.cursor()
 
     return connection, cursor
-
-def get_db_connection_and_cursor():
-    host = os.environ.get('DB_HOST_DEV')
-    port = os.environ.get('DB_PORT')
-    user = os.environ.get('DB_USER')
-    password = os.environ.get('DB_PASSWORD')
-    database = os.environ.get('DB_NAME')
-
-    connection = connector.connect(host=host,
-                                port=port,
-                                user=user,
-                                password=password,
-                                database=database,
-                                auth_plugin='mysql_native_password')
-    
-    return connection.cursor(), connection
-
-def get_column_size(column_name, table_name, cursor):
-    try:
-        query = f"SELECT MAX(LENGTH({column_name})) FROM {table_name};"
-        cursor.execute(query)
-        resultSet = cursor.fetchall()
-
-        if resultSet[0][0] != None:
-            return resultSet[0][0]
-        else:
-            return 100
-        
-    except:
-        return 100
-    
-def get_all_columns_sizes(initial_sizes, cursor):
-    for table in initial_sizes.keys():
-        for column in initial_sizes[table]:
-            initial_sizes[table][column] = get_column_size(column, table, cursor)
-    
-    return initial_sizes
-
 
 # UNDER TEST FUNCTIONS
 def expand_column_size(new_length, table_name, column_name, connection, cursor):
@@ -58,14 +19,14 @@ def expand_column_size(new_length, table_name, column_name, connection, cursor):
 
 # TESTS
 def test_expand_column_size_over_maximum():
-    cursor, connection = get_db_connection_and_cursor()
+    cursor, connection = get_db_cursor(False)
 
     test_list = []
     for i in range(5001):
         test_list.append('x')
 
     test_string = ''.join(test_list)
-    query = f"INSERT INTO scopus_publications VALUES ('-','-','-','-','-','{test_string}','-','-','-',0,0,0);"
+    query = f"INSERT INTO publications VALUES ('-','-','-','-','-','{test_string}','-','-','-',0,0,0);"
 
     columns_sizes = {
         "Abstract": 5000
@@ -92,7 +53,7 @@ def test_expand_column_size_over_maximum():
 
 
 def test_expand_column_size_under_maximum():
-    cursor, connection = get_db_connection_and_cursor()
+    cursor, connection = get_db_cursor(False)
 
     test_list = []
     for i in range(1000):
@@ -103,7 +64,7 @@ def test_expand_column_size_under_maximum():
     }
 
     test_string = ''.join(test_list)
-    query = f"INSERT INTO scopus_publications VALUES ('-','-','-','-','{test_string}','-','-','-','-',0,0,0);"
+    query = f"INSERT INTO publications VALUES ('-','-','-','-','{test_string}','-','-','-','-',0,0,0);"
 
     try:
         cursor.execute(query)
@@ -120,6 +81,6 @@ def test_expand_column_size_under_maximum():
             
             with patch.object(mock_cursor, "execute") as mock_execute:
                 expand_column_size(columns_sizes[column_name], 'publications', column_name, mock_connection, mock_cursor)
-                expected_query = "ALTER TABLE scopus_publications MODIFY COLUMN Journal VARCHAR(1000);"
+                expected_query = "ALTER TABLE publications MODIFY COLUMN Journal VARCHAR(1000);"
                 mock_execute.assert_called_once_with(expected_query)
                 mock_connection.commit.assert_called_once()

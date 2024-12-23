@@ -1,17 +1,4 @@
-# UNDER TEST FUNCTIONS
-def build_keywords_query(keywords, booleans):
-
-    keywords_list = '('
-    for i in range(len(keywords)):
-        if i == len(keywords)-1:
-            keywords_list = keywords_list + '{' + keywords[i] + '}'
-        else:
-            keywords_list = keywords_list + '{' + keywords[i] + '} ' + booleans[i] + ' '
-
-    keywords_list = keywords_list + ')'
-    keywords = keywords_list
-    
-    return keywords
+from lib.helpers import build_keywords_query
 
 # TESTS
 def test_build_keywords_query():
