@@ -65,6 +65,7 @@ def get_publications_duplicates(db):
             db.session.commit()
 
         except:
+            db.session.rollback()
             pass
 
 
@@ -131,6 +132,7 @@ def get_authors_duplicates(db):
             db.session.commit()
 
         except:
+            db.session.rollback()
             pass
 
 
@@ -193,4 +195,5 @@ def get_organizations_duplicates(db):
             db.session.commit()
 
         except:
+            db.session.rollback()
             pass
