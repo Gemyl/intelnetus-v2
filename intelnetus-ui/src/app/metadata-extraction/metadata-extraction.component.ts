@@ -12,7 +12,7 @@ import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-metadata-extraction',
   templateUrl: './metadata-extraction.component.html',
-  styleUrls: []
+  styles: "@import '../../theme-colors.scss';"
 })
 export class MetadataExtractionComponent implements OnInit {
   public data: Array<Metadata> = [];
