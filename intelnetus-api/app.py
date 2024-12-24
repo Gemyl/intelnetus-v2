@@ -1,4 +1,4 @@
-from db.connection import get_db_cursor, get_db_connection_uri
+from db.connection import open_db_session, close_db_session, get_db_connection_uri
 from handlers.extraction import extract_metadata
 from handlers.deduplication import get_publications_duplicates, get_authors_duplicates, get_organizations_duplicates
 from lib.helpers import get_scopus_fields
@@ -40,10 +40,9 @@ CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = get_db_connection_uri(is_production_env)
 
 db.init_app(app)
+
 with app.app_context():
     db.create_all()
-
-cursor = get_db_cursor(is_production_env)
 
 @app.route('/get-metadata', methods=['GET'])
 def get_metadata():
@@ -131,6 +130,8 @@ def get_metadata():
         publications_ids = []
         authors_ids = []
         organizations_ids = []
+
+        cursor, connection = open_db_session(is_production_env)
         cursor.execute(query)
         metadata = cursor.fetchall()
 
@@ -312,6 +313,8 @@ def get_metadata():
             "data":[],
             "variants":[]
         }
+
+    close_db_session(cursor, connection)
     return result
 
 if __name__ == '__main__':

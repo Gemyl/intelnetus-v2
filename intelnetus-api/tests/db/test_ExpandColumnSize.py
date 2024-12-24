@@ -1,4 +1,4 @@
-from db.connection import get_db_cursor
+from db.connection import open_db_session
 from unittest.mock import Mock, patch
 import re
 
@@ -19,7 +19,7 @@ def expand_column_size(new_length, table_name, column_name, connection, cursor):
 
 # TESTS
 def test_expand_column_size_over_maximum():
-    cursor, connection = get_db_cursor(False)
+    cursor, connection = open_db_session(False)
 
     test_list = []
     for i in range(5001):
@@ -53,7 +53,7 @@ def test_expand_column_size_over_maximum():
 
 
 def test_expand_column_size_under_maximum():
-    cursor, connection = get_db_cursor(False)
+    cursor, connection = open_db_session(False)
 
     test_list = []
     for i in range(1000):

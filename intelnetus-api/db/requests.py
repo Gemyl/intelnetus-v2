@@ -1,10 +1,10 @@
-from db.connection import get_db_cursor
+from db.connection import open_db_session
 
 def expand_column_size(new_length, table_name, column_name, is_production_env):
     new_length_int = str(new_length)
     new_table_name = f"{table_name}"
 
-    cursor, connection = get_db_cursor(is_production_env)
+    cursor, connection = open_db_session(is_production_env)
 
     query = f"ALTER TABLE {new_table_name} MODIFY COLUMN {column_name} VARCHAR({new_length_int});"
     cursor.execute(query)
