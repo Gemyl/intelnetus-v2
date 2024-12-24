@@ -6,6 +6,7 @@ from models import db
 from dotenv import load_dotenv
 from flask_cors import CORS
 from flask import Flask, request
+from flask_migrate import Migrate
 import pymysql
 import mysql
 import os
@@ -43,6 +44,8 @@ db.init_app(app)
 
 with app.app_context():
     db.create_all()
+
+migrate = Migrate(app, db)
 
 @app.route('/get-metadata', methods=['GET'])
 def get_metadata():
