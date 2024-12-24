@@ -29,7 +29,7 @@ def test_expand_column_size_over_maximum():
     query = f"INSERT INTO publications VALUES ('-','-','-','-','-','{test_string}','-','-','-',0,0,0);"
 
     columns_sizes = {
-        "Abstract": 5000
+        "abstract": 5000
     }
 
     try:
@@ -47,7 +47,7 @@ def test_expand_column_size_over_maximum():
                         
             with patch.object(mock_cursor, "execute") as mock_execute:
                 expand_column_size(columns_sizes[column_name], 'publications', column_name, mock_connection, mock_cursor)
-                expected_query = "ALTER TABLE scopus_publications MODIFY COLUMN Abstract VARCHAR(5000);"
+                expected_query = "ALTER TABLE publications MODIFY COLUMN abstract VARCHAR(5000);"
                 mock_execute.assert_called_once_with(expected_query)
                 mock_connection.commit.assert_called_once()
 
@@ -60,7 +60,7 @@ def test_expand_column_size_under_maximum():
         test_list.append('x')
 
     columns_sizes = {
-        "Journal": 1000
+        "journal": 1000
     }
 
     test_string = ''.join(test_list)
@@ -81,6 +81,6 @@ def test_expand_column_size_under_maximum():
             
             with patch.object(mock_cursor, "execute") as mock_execute:
                 expand_column_size(columns_sizes[column_name], 'publications', column_name, mock_connection, mock_cursor)
-                expected_query = "ALTER TABLE publications MODIFY COLUMN Journal VARCHAR(1000);"
+                expected_query = "ALTER TABLE publications MODIFY COLUMN journal VARCHAR(1000);"
                 mock_execute.assert_called_once_with(expected_query)
                 mock_connection.commit.assert_called_once()
