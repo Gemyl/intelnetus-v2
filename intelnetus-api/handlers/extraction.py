@@ -1,7 +1,7 @@
 from models import Publication_Db_Model, Author_Db_Model, Organization_Db_Model, Publication_Author_Db_Model, Publication_Organization_Db_Model, Author_Organization_Db_Model
 from lib.helpers import get_scopus_fields, get_affiliations_ids, build_keywords_query
 from pybliometrics.scopus import AbstractRetrieval, AuthorRetrieval, AffiliationRetrieval
-from builders import PublicationBuilder, AuthorBuilder, OrganizationBuilder
+from handlers.builders import PublicationBuilder, AuthorBuilder, OrganizationBuilder
 from db.requests import expand_column_size
 from lib.constants import BLUE, RESET
 from requests import get
