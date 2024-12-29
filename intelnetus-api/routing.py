@@ -1,5 +1,5 @@
-from routes.GetMetadata import get_metadata
-from routes.GetInsights import get_publications_number_per_country
+from routes.metadata import get_metadata
+from routes.insights import get_publications_number_per_country, get_publications_number_per_field
 
 def register_routes(app, db, is_production_env, scopus_api_key):
 
@@ -9,6 +9,11 @@ def register_routes(app, db, is_production_env, scopus_api_key):
         return result
     
     @app.route('/get-insights/publications-number-per-country', methods=['GET'])
-    def invoke_get_insights():
+    def invoke_get_publications_number_per_country():
         result = get_publications_number_per_country(db, is_production_env)
+        return result
+    
+    @app.route('/get-insights/publications-number-per-field', methods=['GET'])
+    def invoke_get_publications_per_fields():
+        result = get_publications_number_per_field(db, is_production_env)
         return result
