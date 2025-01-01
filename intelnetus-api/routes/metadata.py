@@ -18,8 +18,8 @@ def get_metadata(db, is_production_env, scopus_api_key):
         filter_values = json.loads(request.args.get("filterValue"))
         excluded_variants = json.loads(request.args.get("exclude"))
 
-        for year in range(int(start_year), int(end_year)+1):
-            extract_metadata(keywords, year, fields, booleans, scopus_api_key, db, is_production_env)
+        # for year in range(int(start_year), int(end_year)+1):
+        #     extract_metadata(keywords, year, fields, booleans, scopus_api_key, db, is_production_env)
 
         get_publications_duplicates(db)
         get_authors_duplicates(db)

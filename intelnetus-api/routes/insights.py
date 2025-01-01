@@ -77,52 +77,52 @@ def get_metadata_insights(db, is_production_env):
             publications_number_per_field = sorted(publications_number_per_field.items(), key=lambda x: x[1], reverse=True)
             publications_number_per_field = dict(publications_number_per_field[:5])
         
-        # PUBLICATIONS FIELDS CITATIONS PER YEAR
+        # FIELDS CITATIONS PER YEAR
         basic_query = "SELECT year, fields, citations_count FROM publications"    
         query = basic_query + criteria_query
 
         cursor.execute(query)
         data_fetched = cursor.fetchall()
 
-        publications_fields_citations_per_year = {}
+        fields_citations_per_year = {}
         if(len(data_fetched) > 0):
-            fields_citations_per_year = {}
-            fields_citations_total = {}
+            citations_per_year = {}
+            citations_per_field = {}
 
             for item in data_fetched:
                 for field in item[1].split(","):
-                    if(field not in fields_citations_per_year.keys()):
-                        fields_citations_per_year[field] = {}
-                        fields_citations_per_year[field][item[0]] = item[2]
-                    elif(item[0] not in fields_citations_per_year[field].keys()):
-                        fields_citations_per_year[field][item[0]] = item[2]
+                    if(field not in citations_per_year.keys()):
+                        citations_per_year[field] = {}
+                        citations_per_year[field][item[0]] = item[2]
+                    elif(item[0] not in citations_per_year[field].keys()):
+                        citations_per_year[field][item[0]] = item[2]
                     else:
-                        fields_citations_per_year[field][item[0]] = item[2] + fields_citations_per_year[field][item[0]]
+                        citations_per_year[field][item[0]] = item[2] + citations_per_year[field][item[0]]
 
-                    if(field not in fields_citations_total.keys()):
-                        fields_citations_total[field] = item[2]
+                    if(field not in citations_per_field.keys()):
+                        citations_per_field[field] = item[2]
                     else: 
-                        fields_citations_total[field] = item[2] + fields_citations_total[field]
+                        citations_per_field[field] = item[2] + citations_per_field[field]
             
-            fields_citations_total = sorted(fields_citations_total.items(), key=lambda x: x[1], reverse=True)
-            fields_citations_total = dict(fields_citations_total[:5])
+            citations_per_field = sorted(citations_per_field.items(), key=lambda x: x[1], reverse=True)
+            citations_per_field = dict(citations_per_field[:5])
             
-            for field in fields_citations_per_year.keys():
-                if(field in fields_citations_total.keys()):
-                     publications_fields_citations_per_year[field] = fields_citations_per_year[field]
+            for field in citations_per_year.keys():
+                if(field in citations_per_field.keys()):
+                     fields_citations_per_year[field] = citations_per_year[field]
 
             for year in range(int(start_year), int(end_year)+1):
-                for field in publications_fields_citations_per_year.keys():
-                    if(str(year) not in publications_fields_citations_per_year[field].keys()):
-                        publications_fields_citations_per_year[field][str(year)] = 0
+                for field in fields_citations_per_year.keys():
+                    if(str(year) not in fields_citations_per_year[field].keys()):
+                        fields_citations_per_year[field][str(year)] = 0
 
         result = {
             "successful": True,
             "hasResult": True,
             "data": {
                 "publicationsNumberPerCountry": publications_number_per_country,
-                "publicationsNumberPerField": publications_number_per_field,
-                "publicationsFieldsCitationsPerYear": publications_fields_citations_per_year
+                "publicationsCitationsNumberPerField": publications_number_per_field,
+                "fieldsCitationsPerYear": fields_citations_per_year
             }
         }
 
