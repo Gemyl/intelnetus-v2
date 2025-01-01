@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { LoadMetadata } from './store/actions/metadata-extraction.action';
+import { GetMetadataInsightsAction } from './store/actions/metadata-insights.actions';
 import { AppState } from '../app.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MetadataSearchFormComponent } from './components/metadata-search-form/metadata-search-form.component';
@@ -80,6 +81,14 @@ export class MetadataExtractionComponent implements OnInit {
             response.variants.publicationsVariants.originals.length == 0 &&
             response.variants.authorsVariants.originals.length == 0 &&
             response.variants.organizationsVariants.originals.length == 0
+
+          this.store$.dispatch(GetMetadataInsightsAction({
+            keywords: this.searchCriteria.keywords,
+            operators: this.searchCriteria.operators,
+            startYear: this.searchCriteria.startYear,
+            endYear: this.searchCriteria.endYear,
+            fields: this.searchCriteria.fields
+          }))
         }
 
         this.loading = false;

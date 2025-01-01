@@ -27,6 +27,7 @@
     "@ngrx/store": "^17.0.0",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
+    "chart.js": "^4.4.7",
     "font-awesome": "^4.7.0",
     "primeng": "^17.18.7",
     "rxjs": "~7.8.0",

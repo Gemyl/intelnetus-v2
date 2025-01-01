@@ -20,6 +20,9 @@ import { TabViewModule } from 'primeng/tabview';
 import { ViewDetailsComponent } from './components/view-details/view-details.component';
 import { InputTextareaModule} from 'primeng/inputtextarea';
 import { DatePipe } from '@angular/common';
+import { MetadataChartsComponent } from './components/metadata-charts/metadata-charts.component';
+import { metadataInsightsReducer } from './store/reducers/metadata-insights.reducer';
+import { MetadataInsightsEffects } from './store/effects/metadata-insights.effect';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,8 @@ import { DatePipe } from '@angular/common';
     MetadataTableComponent,
     GenericModalComponent,
     VariantsModalComponent,
-    ViewDetailsComponent
+    ViewDetailsComponent,
+    MetadataChartsComponent
   ],
   imports: [
     CommonModule,
@@ -37,7 +41,8 @@ import { DatePipe } from '@angular/common';
     ReactiveFormsModule,
     HttpClientModule,
     StoreModule.forFeature('metadataState', metadataExtractionReducer),
-    EffectsModule.forFeature([MetadataExtractionEffects]),
+    StoreModule.forFeature('metadataInsightsState', metadataInsightsReducer),
+    EffectsModule.forFeature([MetadataExtractionEffects, MetadataInsightsEffects]),
     TableModule,
     FontAwesomeModule,
     PaginatorModule,
