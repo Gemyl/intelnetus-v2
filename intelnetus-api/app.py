@@ -17,7 +17,8 @@ password = os.environ.get('DB_PASSWORD')
 database = os.environ.get('DB_NAME')
 scopus_api_key = os.environ.get('SCOPUS_API_KEY')
 
-os.environ['PYB_CONFIG_FILE'] = "/app/.pybliometrics/config.ini"
+# the line below should be in comments in DEVELOPMENT environment
+# os.environ['PYB_CONFIG_FILE'] = "/app/.pybliometrics/config.ini"
 
 environment = 'PRODUCTION'
 is_production_env = True
