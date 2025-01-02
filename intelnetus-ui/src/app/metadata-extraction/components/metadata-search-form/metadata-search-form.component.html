@@ -5,9 +5,9 @@
                 <div class="d-flex flex-direction-column justify-content-space-between h-100 w-50 p-2">
                     <div class="d-flex flex-column h-100 w-100" formArrayName="keywords">
                         <label class="intel-label">Keywords</label>
-                        <div class="d-flex flex-column overflow-y-auto mh-90 w-100 p-2">
+                        <div class="d-flex flex-column overflow-y-auto mh-90 w-100 ps-2 pe-2 pb-2">
                             @for(keyword of keywords.controls; track keyword.value.value; let i = $index;) {
-                                <div class="d-flex flex-column w-100 mt-2" [formGroupName]="i">
+                                <div class="d-flex flex-column w-100" [formGroupName]="i" [ngStyle]="{'margin-top': i == 0 ? '0' : '.5rem'}">
                                     @if(i > 0) {
                                         <div class="d-flex flex-row">
                                             <select name="operator-{{i}}" class="intel-slct" formControlName="operator">
