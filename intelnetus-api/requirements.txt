@@ -48,7 +48,7 @@ pytest==8.3.4
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.0
 python-Levenshtein==0.23.0
-pywin32==308
+pywin32==308; platform_system=="Windows"
 pyzmq==26.2.0
 rapidfuzz==3.5.2
 requests==2.31.0

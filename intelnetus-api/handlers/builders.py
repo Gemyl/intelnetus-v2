@@ -1,6 +1,3 @@
-# import os
-# os.environ['PYB_CONFIG_FILE'] = "/app/.pybliometrics/config.ini"
-
 from lib.helpers import get_sql_syntax, remove_common_words, get_safe_attribute
 from lib.constants import COMMON_WORDS, MAX_COLUMN_SIZE, ORGANIZATIONS_TYPES_KEYWORDS
 from pybliometrics.scopus import PlumXMetrics
