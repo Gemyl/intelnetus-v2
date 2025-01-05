@@ -3,7 +3,7 @@
 Copyright &copy; 2025 Georgios Milonas. All rights reserved.
 
 ## Overview
-Intelnteus is a web applications that is directed to help science network
+Intelnetus is a web applications that is directed to help science network
 researchers to perform statistical analysis with greater accuracy and ease.
 
 Key features:
