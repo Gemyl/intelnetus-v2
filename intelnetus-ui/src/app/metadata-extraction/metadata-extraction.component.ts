@@ -82,13 +82,20 @@ export class MetadataExtractionComponent implements OnInit {
             response.variants.authorsVariants.originals.length == 0 &&
             response.variants.organizationsVariants.originals.length == 0
 
-          this.store$.dispatch(GetMetadataInsightsAction({
-            keywords: this.searchCriteria.keywords,
-            operators: this.searchCriteria.operators,
-            startYear: this.searchCriteria.startYear,
-            endYear: this.searchCriteria.endYear,
-            fields: this.searchCriteria.fields
-          }))
+          if(
+            this.searchCriteria.keywords &&
+            this.searchCriteria.startYear && 
+            this.searchCriteria.endYear && 
+            this.searchCriteria.fields
+          ) {
+            this.store$.dispatch(GetMetadataInsightsAction({
+              keywords: this.searchCriteria.keywords,
+              operators: this.searchCriteria.operators,
+              startYear: this.searchCriteria.startYear,
+              endYear: this.searchCriteria.endYear,
+              fields: this.searchCriteria.fields
+            }))
+          }
         }
 
         this.loading = false;
