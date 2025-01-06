@@ -83,3 +83,6 @@ Navigate in **intelnetus-ui** directory and run:
 ```
 ng serve 
 ```
+
+## Communication
+For any queries or feedback regarding this repository, you can reach me out through the contact information attached in my [profile page](https://github.com/Gemyl/profile)😊.
