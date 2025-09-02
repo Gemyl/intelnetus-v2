@@ -22,11 +22,10 @@ scopus_api_key = os.environ.get('SCOPUS_API_KEY')
 
 environment = 'PRODUCTION'
 is_production_env = True
-for arg in sys.argv:
-    if(arg == '--dev'):
-        environment = 'DEVELOPMENT'
-        is_production_env = False
-        break
+
+if(("--dev" in sys.argv) | ("db" in sys.argv)):
+    environment = 'DEVELOPMENT'
+    is_production_env = False
 
 if(is_production_env):
     host = os.environ.get('DB_HOST_PROD')
