@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CoreModule } from '../core/core.module';
 import { MetadataExtractionComponent } from './metadata-extraction.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { metadataExtractionReducer } from './store/reducers/metadata-extraction.reducer';
@@ -24,34 +24,28 @@ import { MetadataChartsComponent } from './components/metadata-charts/metadata-c
 import { metadataInsightsReducer } from './store/reducers/metadata-insights.reducer';
 import { MetadataInsightsEffects } from './store/effects/metadata-insights.effect';
 
-@NgModule({
-  declarations: [
-    MetadataExtractionComponent,
-    MetadataSearchFormComponent,
-    MetadataTableComponent,
-    GenericModalComponent,
-    VariantsModalComponent,
-    ViewDetailsComponent,
-    MetadataChartsComponent
-  ],
-  imports: [
-    CommonModule,
-    CoreModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    StoreModule.forFeature('metadataState', metadataExtractionReducer),
-    StoreModule.forFeature('metadataInsightsState', metadataInsightsReducer),
-    EffectsModule.forFeature([MetadataExtractionEffects, MetadataInsightsEffects]),
-    TableModule,
-    FontAwesomeModule,
-    PaginatorModule,
-    MetadataExtractionRoutingModule,
-    TabViewModule,
-    InputTextareaModule
-  ],
-  providers: [
-    DatePipe
-  ]
-})
+@NgModule({ declarations: [
+        MetadataExtractionComponent,
+        MetadataSearchFormComponent,
+        MetadataTableComponent,
+        GenericModalComponent,
+        VariantsModalComponent,
+        ViewDetailsComponent,
+        MetadataChartsComponent
+    ], imports: [CommonModule,
+        CoreModule,
+        FormsModule,
+        ReactiveFormsModule,
+        StoreModule.forFeature('metadataState', metadataExtractionReducer),
+        StoreModule.forFeature('metadataInsightsState', metadataInsightsReducer),
+        EffectsModule.forFeature([MetadataExtractionEffects, MetadataInsightsEffects]),
+        TableModule,
+        FontAwesomeModule,
+        PaginatorModule,
+        MetadataExtractionRoutingModule,
+        TabViewModule,
+        InputTextareaModule], providers: [
+        DatePipe,
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class MetadataExtractionModule { }
