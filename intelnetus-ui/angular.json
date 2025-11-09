@@ -20,6 +20,16 @@
             "outputPath": {
               "base": "dist/intelnetus-ui"
             },
+            "stylePreprocessorOptions": {
+              "sass": {
+                "silenceDeprecations": [
+                  "mixed-decls",
+                  "color-functions",
+                  "global-builtin",
+                  "import"
+                ]
+              }
+            },
             "index": "src/index.html",
             "polyfills": [
               "zone.js",
