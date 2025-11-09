@@ -18,7 +18,6 @@ import { MetadataExtractionRoutingModule } from './metadata-extraction-routing.m
 import { VariantsModalComponent } from './components/variants-modal/variants-modal.component';
 import { TabViewModule } from 'primeng/tabview';
 import { ViewDetailsComponent } from './components/view-details/view-details.component';
-import { InputTextareaModule} from 'primeng/inputtextarea';
 import { DatePipe } from '@angular/common';
 import { MetadataChartsComponent } from './components/metadata-charts/metadata-charts.component';
 import { metadataInsightsReducer } from './store/reducers/metadata-insights.reducer';
@@ -32,7 +31,8 @@ import { MetadataInsightsEffects } from './store/effects/metadata-insights.effec
         VariantsModalComponent,
         ViewDetailsComponent,
         MetadataChartsComponent
-    ], imports: [CommonModule,
+    ], imports: [
+        CommonModule,
         CoreModule,
         FormsModule,
         ReactiveFormsModule,
@@ -43,8 +43,8 @@ import { MetadataInsightsEffects } from './store/effects/metadata-insights.effec
         FontAwesomeModule,
         PaginatorModule,
         MetadataExtractionRoutingModule,
-        TabViewModule,
-        InputTextareaModule], providers: [
+        TabViewModule
+    ], providers: [
         DatePipe,
         provideHttpClient(withInterceptorsFromDi())
     ] })

@@ -16,16 +16,17 @@ import {
 } from '@angular/animations';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: [],
-  animations: [
-    trigger('cardHover', [
-      state('hovered', style({transform: 'scale(1.1)', background: 'linear-gradient(to top left, #dddddd, #579657)', color: 'white'})),
-      state('notHovered', style({transform: 'scale(1)', backgroundColor: '#eeeeee', color: 'black'})),
-      transition('* <=> *', animate('200ms'))
-    ])
-  ]
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: [],
+    animations: [
+        trigger('cardHover', [
+            state('hovered', style({ transform: 'scale(1.1)', background: 'linear-gradient(to top left, #dddddd, #579657)', color: 'white' })),
+            state('notHovered', style({ transform: 'scale(1)', backgroundColor: '#eeeeee', color: 'black' })),
+            transition('* <=> *', animate('200ms'))
+        ])
+    ],
+    standalone: false
 })
 
 export class HomeComponent implements OnInit {

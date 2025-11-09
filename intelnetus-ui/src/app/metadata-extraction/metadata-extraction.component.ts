@@ -11,9 +11,10 @@ import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
 
 @Component({
-  selector: 'app-metadata-extraction',
-  templateUrl: './metadata-extraction.component.html',
-  styles: "@import '../../theme-colors.scss';"
+    selector: 'app-metadata-extraction',
+    templateUrl: './metadata-extraction.component.html',
+    styles: "@import '../../theme-colors.scss';",
+    standalone: false
 })
 export class MetadataExtractionComponent implements OnInit {
   public data: Array<Metadata> = [];

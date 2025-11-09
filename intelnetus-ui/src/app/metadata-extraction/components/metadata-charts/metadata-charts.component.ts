@@ -4,9 +4,10 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.state';
 
 @Component({
-  selector: 'app-metadata-charts',
-  templateUrl: './metadata-charts.component.html',
-  styleUrl: './metadata-charts.component.scss'
+    selector: 'app-metadata-charts',
+    templateUrl: './metadata-charts.component.html',
+    styleUrl: './metadata-charts.component.scss',
+    standalone: false
 })
 export class MetadataChartsComponent implements OnInit, AfterViewInit {
   public publicationsPerCountryChart: Chart;
