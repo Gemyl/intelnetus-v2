@@ -10,6 +10,9 @@ import { MetadataExtractionModule } from './metadata-extraction/metadata-extract
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { ToastsModule } from 'src/shared/Toast/toasts.module';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePrimeNG } from 'primeng/config';
+import Aura from "@primeng/themes/aura";
 
 @NgModule({
   declarations: [
@@ -26,7 +29,14 @@ import { ToastsModule } from 'src/shared/Toast/toasts.module';
     EffectsModule.forRoot({}),
     ToastsModule
 ],
-  providers: [],
+  providers: [
+    provideAnimationsAsync(),
+    providePrimeNG({
+      theme: {
+        preset: Aura
+      }
+    }),
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
