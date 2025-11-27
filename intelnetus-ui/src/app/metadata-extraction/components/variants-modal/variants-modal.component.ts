@@ -4,10 +4,11 @@ import { faBook, faUser, faBuilding } from '@fortawesome/free-solid-svg-icons';
 import { AuthorVariants, OrganizationVariants, PublicationVariants, Variants, Entity } from '../../models/metadata-extraction.model';
 
 @Component({
-  selector: 'app-variants-modal',
-  templateUrl: './variants-modal.component.html',
-  styleUrl: './variants-modal.component.scss',
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-variants-modal',
+    templateUrl: './variants-modal.component.html',
+    styleUrl: './variants-modal.component.scss',
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class VariantsModalComponent implements OnInit {
   faBook = faBook;

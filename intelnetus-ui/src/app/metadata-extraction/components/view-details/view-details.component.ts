@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-view-details',
-  templateUrl: './view-details.component.html'
+    selector: 'app-view-details',
+    templateUrl: './view-details.component.html',
+    standalone: false
 })
 
 export class ViewDetailsComponent {

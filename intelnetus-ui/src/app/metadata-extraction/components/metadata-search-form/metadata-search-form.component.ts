@@ -5,9 +5,10 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-metadata-search-form',
-  templateUrl: './metadata-search-form.component.html',
-  styleUrls: []
+    selector: 'app-metadata-search-form',
+    templateUrl: './metadata-search-form.component.html',
+    styleUrls: [],
+    standalone: false
 })
 export class MetadataSearchFormComponent implements OnInit {
   public searchForm: FormGroup;

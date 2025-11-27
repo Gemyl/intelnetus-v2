@@ -11,9 +11,10 @@ import { faFileExcel } from '@fortawesome/free-solid-svg-icons';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-metadata-table',
-  templateUrl: './metadata-table.component.html',
-  styleUrls: []
+    selector: 'app-metadata-table',
+    templateUrl: './metadata-table.component.html',
+    styleUrls: [],
+    standalone: false
 })
 export class MetadataTableComponent implements OnInit {
   @ViewChild("dt") dataGrid: Table;

@@ -4,21 +4,22 @@ import { state, transition, style, animate, trigger } from '@angular/animations'
 import { faHome, faSearch, faGlobe, faGear, faInfo } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-main-menu-navbar',
-  templateUrl: './main-menu-navbar.component.html',
-  styleUrls: ['./main-menu-navbar.component.scss'],
-  animations: [
-    trigger('draw', [
-      state('drawIn', style({
-        width: '0px',
-      })),
-      state('drawOut', style({
-        width: '120px'
-      })),
-      transition('drawIn => drawOut', animate('0.3s')),
-      transition('drawOut => drawIn', animate('0.3s'))
-    ])
-  ]
+    selector: 'app-main-menu-navbar',
+    templateUrl: './main-menu-navbar.component.html',
+    styleUrls: ['./main-menu-navbar.component.scss'],
+    animations: [
+        trigger('draw', [
+            state('drawIn', style({
+                width: '0px',
+            })),
+            state('drawOut', style({
+                width: '120px'
+            })),
+            transition('drawIn => drawOut', animate('0.3s')),
+            transition('drawOut => drawIn', animate('0.3s'))
+        ])
+    ],
+    standalone: false
 })
 
 export class MainMenuNavbarComponent implements OnInit {
