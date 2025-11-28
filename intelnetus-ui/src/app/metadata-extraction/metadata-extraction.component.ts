@@ -5,16 +5,18 @@ import { GetMetadataInsightsAction } from './store/actions/metadata-insights.act
 import { AppState } from '../app.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MetadataSearchFormComponent } from './components/metadata-search-form/metadata-search-form.component';
-import { GetMetadataRequest, Metadata, Variants } from './models/metadata-extraction.model';
+import { GetMetadataRequest, Metadata, Operation, Variants } from './models/metadata-extraction.model';
 import { PaginatorState } from 'primeng/paginator';
-import { DatePipe } from '@angular/common'; 
+import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
+import { Link, Node } from './models/metadata-network.model';
+import { buildNetwork } from './utils/metadata-network.utils';
 
 @Component({
-    selector: 'app-metadata-extraction',
-    templateUrl: './metadata-extraction.component.html',
-    styles: "@import '../../theme-colors.scss';",
-    standalone: false
+  selector: 'app-metadata-extraction',
+  templateUrl: './metadata-extraction.component.html',
+  styles: "@import '../../theme-colors.scss';",
+  standalone: false
 })
 export class MetadataExtractionComponent implements OnInit {
   public data: Array<Metadata> = [];
@@ -24,6 +26,8 @@ export class MetadataExtractionComponent implements OnInit {
   public total: number = 0;
   public noVariants: boolean = false;
   public forExport: boolean = false;
+  public operation: number = Operation.DATA;
+  public networkData: { nodes: Array<Node>, links: Array<Link> } = { nodes: [], links: [] }
   public headers = {
     publicationDoi: "DOI",
     publicationTitle: "Title",
@@ -46,7 +50,7 @@ export class MetadataExtractionComponent implements OnInit {
     private store$: Store<AppState>,
     private _modalService: NgbModal,
     private _datePipe: DatePipe
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.searchCriteria = new GetMetadataRequest();
@@ -69,43 +73,61 @@ export class MetadataExtractionComponent implements OnInit {
       .select((store) => store.metadataState)
       .subscribe(response => {
 
-        if(this.forExport && response.data.length > 0) {
-          this.forExport = false;
-          this.exportToExcel(response.data);
-        
-        } else if (!this.forExport) {
-          this.data = response.data;
-          this.total = response.total;
-          this.variants = response.variants;
-  
-          this.noVariants = 
-            response.variants.publicationsVariants.originals.length == 0 &&
-            response.variants.authorsVariants.originals.length == 0 &&
-            response.variants.organizationsVariants.originals.length == 0
+        switch (this.operation) {
+          case Operation.DATA:
+            this.data = response.data;
+            this.total = response.total;
+            this.variants = response.variants;
 
-          if(
-            this.searchCriteria.keywords &&
-            this.searchCriteria.startYear && 
-            this.searchCriteria.endYear && 
-            this.searchCriteria.fields
-          ) {
-            this.store$.dispatch(GetMetadataInsightsAction({
-              keywords: this.searchCriteria.keywords,
-              operators: this.searchCriteria.operators,
-              startYear: this.searchCriteria.startYear,
-              endYear: this.searchCriteria.endYear,
-              fields: this.searchCriteria.fields
-            }))
-          }
+            this.noVariants =
+              response.variants.publicationsVariants.originals.length == 0 &&
+              response.variants.authorsVariants.originals.length == 0 &&
+              response.variants.organizationsVariants.originals.length == 0
+
+            if (
+              this.searchCriteria.keywords &&
+              this.searchCriteria.startYear &&
+              this.searchCriteria.endYear &&
+              this.searchCriteria.fields
+            ) {
+              this.store$.dispatch(GetMetadataInsightsAction({
+                keywords: this.searchCriteria.keywords,
+                operators: this.searchCriteria.operators,
+                startYear: this.searchCriteria.startYear,
+                endYear: this.searchCriteria.endYear,
+                fields: this.searchCriteria.fields
+              }))
+
+              // trigger network data fetching
+              this.fetchAllData(Operation.NETWORK);
+            }
+
+            break;
+
+          case Operation.EXPORT:
+            if (this.data.length > 0) {
+              this.operation = Operation.DATA;
+              this.exportToExcel(response.data);
+            }
+
+            break;
+
+          case Operation.NETWORK:
+            this.operation = Operation.DATA;
+            this.networkData = buildNetwork(response.data);
+
+            break;
+
+          default:
+            console.log("No valid operation");
         }
 
         this.loading = false;
       });
   }
 
-  handlePageChange(event: PaginatorState) {        
+  handlePageChange(event: PaginatorState) {
     this.loading = true;
-
     this.searchCriteria.pageSize = event.rows;
     this.searchCriteria.offset = event.first;
     this.store$.dispatch(LoadMetadata(this.searchCriteria));
@@ -113,7 +135,6 @@ export class MetadataExtractionComponent implements OnInit {
 
   handleFilterChange(event: string) {
     this.loading = true;
-
     this.searchCriteria.filterValue = event;
     this.store$.dispatch(LoadMetadata(this.searchCriteria));
   }
@@ -121,9 +142,8 @@ export class MetadataExtractionComponent implements OnInit {
   handleVariantsSelection(event: string) {
     this.searchCriteria.exclude = event;
 
-    if(this.searchCriteria.keywords) {
+    if (this.searchCriteria.keywords) {
       this.loading = true;
-
       this.store$.dispatch(LoadMetadata(this.searchCriteria));
     }
   }
@@ -136,10 +156,9 @@ export class MetadataExtractionComponent implements OnInit {
     });
 
     modalRef.result.then(response => {
-      
-      if(response) {
+
+      if (response) {
         this.loading = true;
-        
         this.searchCriteria.keywords = response.keywords;
         this.searchCriteria.operators = response.operators;
         this.searchCriteria.startYear = response.startYear;
@@ -151,8 +170,9 @@ export class MetadataExtractionComponent implements OnInit {
     });
   }
 
-  handleExportExcel() {
-    this.forExport = true;
+  fetchAllData(operation: Operation.EXPORT | Operation.NETWORK = Operation.EXPORT) {
+    this.operation = operation;
+
     const searchCriteriaExcel = {
       ...this.searchCriteria,
       ...{
@@ -191,5 +211,5 @@ export class MetadataExtractionComponent implements OnInit {
     return fileContent;
   }
 
-  
+
 }

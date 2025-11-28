@@ -1,3 +1,5 @@
+import { Link, Node } from "./metadata-network.model";
+
 export enum Entity {
     PUBLICATION = "publications",
     AUTHOR = "authors",
@@ -130,4 +132,15 @@ export class GetMetadataRequest {
         this.filterValue = filterValue;
         this.exclude = exclude;
     }
+}
+
+export interface NetworkData {
+    nodes: Array<Node>,
+    links: Array<Link>
+}
+
+export enum Operation {
+    "DATA" = 0,
+    "EXPORT" = 1,
+    "NETWORK" = 2
 }

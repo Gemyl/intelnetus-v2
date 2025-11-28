@@ -1,0 +1,21 @@
+<div class="bg-smoke-white border border-light-gray min-vh-100 p-3" style="box-shadow: 0 0 4px, 0 0 4px;">
+  <div class="d-flex flex-row justify-content-start border-bottom border-black border-3 mb-2">
+    <h3>Network Visualization</h3>
+  </div>
+  <div class="bg-white w-100 min-vh-100 d-flex flex-column justify-content-center align-items-center">
+    @if(nodes.length > 0) {
+    <ngx-graph layout="dagre" [autoCenter]="true" [links]="links" [nodes]="nodes">
+      <ng-template #nodeTemplate let-node>
+        <svg:g class="node">
+          <svg:circle [attr.cx]="50" [attr.cy]="50" [attr.r]="40" [attr.fill]="node.data.color" />
+          <svg:text text-anchor="middle" dominant-baseline="central" style="font-size: 12px; pointer-events: none;" [attr.x]="50" [attr.y]="45">
+            {{node.label}}
+          </svg:text>
+        </svg:g>
+      </ng-template>
+    </ngx-graph>
+    } @else {
+    <span class="mx-auto my-auto opacity-75">No data</span>
+    }
+  </div>
+</div>
