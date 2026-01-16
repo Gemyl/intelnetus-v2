@@ -13,9 +13,14 @@
         (onPageChange)="handlePageChange($event)" 
         (onFiltersChange)="handleFilterChange($event)" 
         (onVariantsSelection)="handleVariantsSelection($event)"
-        (onExportExcel)="handleExportExcel()">
+        (onExportExcel)="fetchAllData()">
     </app-metadata-table>
     <app-metadata-charts 
         class="w-85 mt-5">
     </app-metadata-charts>
+    <app-metadata-network 
+        class="w-85 mt-5"
+        [nodes]="networkData.nodes"
+        [links]="networkData.links">
+    </app-metadata-network>
 </div>

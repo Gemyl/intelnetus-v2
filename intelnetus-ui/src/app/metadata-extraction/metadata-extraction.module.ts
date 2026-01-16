@@ -22,6 +22,8 @@ import { DatePipe } from '@angular/common';
 import { MetadataChartsComponent } from './components/metadata-charts/metadata-charts.component';
 import { metadataInsightsReducer } from './store/reducers/metadata-insights.reducer';
 import { MetadataInsightsEffects } from './store/effects/metadata-insights.effect';
+import { MetadataNetworkComponent } from './components/metadata-network/metadata-network.component';
+import { NgxGraphModule } from '@swimlane/ngx-graph';
 
 @NgModule({ declarations: [
         MetadataExtractionComponent,
@@ -30,7 +32,8 @@ import { MetadataInsightsEffects } from './store/effects/metadata-insights.effec
         GenericModalComponent,
         VariantsModalComponent,
         ViewDetailsComponent,
-        MetadataChartsComponent
+        MetadataChartsComponent,
+        MetadataNetworkComponent
     ], imports: [
         CommonModule,
         CoreModule,
@@ -43,7 +46,8 @@ import { MetadataInsightsEffects } from './store/effects/metadata-insights.effec
         FontAwesomeModule,
         PaginatorModule,
         MetadataExtractionRoutingModule,
-        TabViewModule
+        TabViewModule,
+        NgxGraphModule
     ], providers: [
         DatePipe,
         provideHttpClient(withInterceptorsFromDi())
