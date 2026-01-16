@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, ViewChild, OnInit, Input, Output, EventEmitter, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { SortEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { AuthorVariants, GridFilter, Metadata, OrganizationVariants, PublicationVariants, Variants } from '../../models/metadata-extraction.model';
@@ -9,6 +9,7 @@ import { VariantsModalComponent } from '../variants-modal/variants-modal.compone
 import { ViewDetailsComponent } from '../view-details/view-details.component';
 import { faFileExcel } from '@fortawesome/free-solid-svg-icons';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-metadata-table',
@@ -16,7 +17,7 @@ import { faCopy } from '@fortawesome/free-solid-svg-icons';
     styleUrls: [],
     standalone: false
 })
-export class MetadataTableComponent implements OnInit {
+export class MetadataTableComponent implements OnInit, OnDestroy {
   @ViewChild("dt") dataGrid: Table;
   @Output() onPageChange: EventEmitter<PaginatorState> = new EventEmitter<PaginatorState>();
   @Output() onFiltersChange: EventEmitter<string> = new EventEmitter<string>();
@@ -37,6 +38,8 @@ export class MetadataTableComponent implements OnInit {
   public entity = Entity;
   public filters: Array<GridFilter> = [];
   public variantsToExlude: Array<PublicationVariants | AuthorVariants | OrganizationVariants> = [];
+  private filterSubject = new Subject<string>();
+  private filterSubscription: Subscription;
 
   faFileExcel = faFileExcel;
   faCopy = faCopy;
@@ -47,6 +50,17 @@ export class MetadataTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.initialValue = this.data;
+
+    this.filterSubscription = this.filterSubject.pipe(
+      debounceTime(1000),
+      distinctUntilChanged()
+    ).subscribe(debouncedValue => {
+      this.onFiltersChange.emit(debouncedValue);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.filterSubscription.unsubscribe();
   }
 
   openVariantsModal() {
@@ -92,8 +106,7 @@ export class MetadataTableComponent implements OnInit {
       this.filters = this.filters.filter(f => f.field != field);
     }
 
-    this.onFiltersChange.emit(JSON.stringify(this.filters));
-
+    this.filterSubject.next(JSON.stringify(this.filters));
   }
 
   customSort(event: SortEvent) {
